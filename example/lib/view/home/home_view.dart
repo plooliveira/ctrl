@@ -20,7 +20,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'CTRL Playground',
+          'Ctrl Playground',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         centerTitle: true,
