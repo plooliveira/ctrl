@@ -21,11 +21,11 @@ This package is still in early development. While it is functional, there may be
 
 ## Overview 
 
-This package provides a simple and lightweight implementation of MVC pattern with for Flutter applications. It is designed to be easy to use and to help you write clean, testable, and maintainable code.
+This package provides a simple, lightweight implementation of the MVC pattern for Flutter applications. It focuses on ease of use and helps you write clean, testable, and maintainable code.
 
-The core component of the package is the Observable, a reactive data holder that notifies UI components whenever its value changes, triggering automatic UI updates.
+At its core is the Observable, a reactive data holder that notifies UI components when its value changes, automatically updating the interface.
 
-The package also provides a `Controller` class, which is a base class for your controllers. The `Controller` class manages the lifecycle of `Observable` objects using the flutter widget lifecycle.F
+The package also includes a Controller base class that manages Observable instances throughout the widget lifecycle using scoped lifetimes, ensuring proper initialization and disposal.
 
 ## Installation
 
@@ -234,35 +234,35 @@ Locator().registerSingleton<CounterRepository>(CounterRepositoryImpl());
 To retrieve any registered type, use:
 
 ```dart
-final counterViewModel = Locator().get<CounterViewModel>();
+final counterController = Locator().get<CounterController>();
 ```
 
 or by type inference:
 
 ```dart
-final CounterViewModel counterViewModel = Locator().get();
+final CounterController counterController = Locator().get();
 ```
 
-Ps: The ViewState class uses this service locator by default to create ViewModel instances. You can override the `resolveViewModel()` method to use a different dependency injection strategy if needed.
+Ps: The ViewState class uses this service locator by default to create Controller instances. You can override the `resolveController()` method to use a different dependency injection strategy if needed.
 ```dart
-  class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
+  class _CounterViewState extends ViewState<CounterController, CounterView> {
     @override
-    CounterViewModel resolveViewModel() => widget.viewModel;
+    CounterController resolveController() => widget.controller;
     // ...
   }
 ```
 
 ## Key Features
 
-- **LiveData**: Observable data holders that notify observers when values change,
-- **ViewModel**: Lifecycle-aware UI logic layer with automatic resource management
-- **Watch/GroupWatch**: Widgets for observing LiveData changes
-- **DataScope**: Container that automatically disposes LiveData instances when no longer needed, preventing memory leaks
+- **Observable**: Reactive data holders that notify observers when values change,
+- **Controller**: Lifecycle-aware UI logic layer with automatic resource management
+- **Watch/GroupWatch**: Widgets for observing Observable changes
+- **DataScope**: Container that automatically disposes Observable instances when no longer needed, preventing memory leaks
 - **Transformations**: `transform()`, `filtered()`, `mirror()` for data manipulation
-- **HotswapLiveData**: Dynamically switch between data sources
+- **HotswapObservable**: Dynamically switch between data sources
 - **RepositoryData**: Pattern for integrating data layers with caching and refreshing capabilities
 - **Built-in Service Locator**: Minimalist service locator for dependency injection
 
 ## Documentation
 
-For more detailed documentation, please visit the [MVVM Kit Library reference](https://pub.dev/documentation/mvvm_kit/latest/mvvm_kit/).
+<!-- For more detailed documentation, please visit the [MVVM Kit Library reference](https://pub.dev/documentation/mvvm_kit/latest/mvvm_kit/). -->
