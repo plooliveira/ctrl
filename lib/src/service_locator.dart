@@ -21,14 +21,14 @@ class _Entry {
 /// Usage:
 /// ```dart
 /// // Registering a factory (new instance each time)
-/// SL.I.registerFactory<MyService>(() => MyServiceImpl());
+/// Locator().registerFactory<MyService>(() => MyServiceImpl());
 ///
 /// // Registering a singleton (same instance every time)
-/// SL.I.registerSingleton<MyRepository>(() => MyRepositoryImpl());
+/// Locator().registerSingleton<MyRepository>(() => MyRepositoryImpl());
 ///
 /// // Retrieving instances
-/// final service = SL.I.get<MyService>();
-/// final repository = SL.I.get<MyRepository>();
+/// final service = Locator().get<MyService>();
+/// final repository = Locator().get<MyRepository>();
 /// ```
 /// Throws a [StateError] if the requested type is not registered.
 class Locator {

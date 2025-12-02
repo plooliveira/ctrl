@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../ctrl.dart';
 
-/// Base class for Controllers in the MVVM pattern.
+/// Base class for Controllers in the MVC pattern.
 ///
 /// [Controller] manages the business logic for the UI layer.
 /// It provides lifecycle management, automatic

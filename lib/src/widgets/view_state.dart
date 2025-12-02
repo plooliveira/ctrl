@@ -1,16 +1,14 @@
-import 'dart:async';
-
 import 'package:ctrl/ctrl.dart';
 import 'package:ctrl/src/helpers/debugger.dart';
 import 'package:flutter/material.dart';
 
-/// Base state for MVVM views.
+/// Base state for MVC views.
 ///
 /// [ViewState] manages the lifecycle connection between a [StatefulWidget] and
 /// its [Controller]. It automatically:
-/// * Sets the ViewModel as active/inactive based on widget lifecycle
+/// * Sets the Controller as active/inactive based on widget lifecycle
 /// * Responds to app lifecycle changes (background/foreground)
-/// * Disposes the ViewModel when the widget is disposed
+/// * Disposes the Controller when the widget is disposed
 ///
 /// This allows you to have full control of the view lifecycle, useful when you need
 /// to override lifecycle methods (didUpdateWidget, didChangeDependencies, etc.) or
@@ -19,12 +17,12 @@ import 'package:flutter/material.dart';
 ///
 /// Example:
 /// ```dart
-/// class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
+/// class _CounterViewState extends ViewState<CounterController, CounterView> {
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return Scaffold(
 ///       body: Watch(
-///         viewModel.counter,
+///         controller.counter,
 ///         builder: (context, value) => Text('$value'),
 ///       ),
 ///     );
@@ -36,13 +34,13 @@ import 'package:flutter/material.dart';
 /// * [Controller], which provides onActive/onInactive callbacks
 abstract class ViewState<T extends Controller, W extends StatefulWidget>
     extends _BaseState<W> {
-  /// Creates the ViewModel instance to be used by this ViewState.
-  /// By default, it retrieves the ViewModel from the service locator.
-  /// Override this method to provide a custom ViewModel instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
+  /// Creates the Controller instance to be used by this ViewState.
+  /// By default, it retrieves the Controller from the service locator.
+  /// Override this method to provide a custom Controller instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
   @protected
   T resolveController() => Locator().get();
 
-  /// The ViewModel instance associated with this ViewState.
+  /// The Controller instance associated with this ViewState.
   late final T controller = resolveController();
   bool _isUpdateScheduled = false;
 
@@ -61,11 +59,11 @@ abstract class ViewState<T extends Controller, W extends StatefulWidget>
   void _disposeController() {
     controller.dispose();
     debugLog(
-      'Disposed ViewModel: ${controller.runtimeType}, from View: ${widget.runtimeType}',
+      'Disposed Controller: ${controller.runtimeType}, from View: ${widget.runtimeType}',
     );
   }
 
-  /// Synchronizes ViewModel.isActive with app lifecycle state. If you need to override, be sure to call super.didChangeAppLifecycleState.
+  /// Synchronizes Controller.isActive with app lifecycle state. If you need to override, be sure to call super.didChangeAppLifecycleState.
   ///
   /// Sets to `true` when resumed, `false` when inactive/hidden/paused.
   @override

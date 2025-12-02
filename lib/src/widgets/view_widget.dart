@@ -9,7 +9,7 @@ import 'package:ctrl/ctrl.dart';
 ///
 /// ```dart
 /// void setupLocator() {
-///   SL.I.registerFactory(() => CounterViewModel());
+///   Locator().registerFactory(() => CounterController());
 /// }
 /// ```
 ///
@@ -19,11 +19,11 @@ import 'package:ctrl/ctrl.dart';
 /// ### Cascade State Composition (CSC)
 ///
 /// ViewWidget enables Cascade State Composition where each widget maintains
-/// its own isolated ViewModel while cascading state changes to children
+/// its own isolated Controller while cascading state changes to children
 /// through reactive constructor injection.
 ///
 /// #### How it works:
-/// - Parent manages its own state via ViewModel
+/// - Parent manages its own state via Controller
 /// - Parent injects data into children via constructor
 /// - Children receive injected data and manage their own state
 /// - State changes cascade down but never up
@@ -33,16 +33,16 @@ import 'package:ctrl/ctrl.dart';
 /// // 2. Inject data into child (influencing child's UI)
 ///
 /// Parent
-///   ├─ Own State: ParentViewModel
+///   ├─ Own State: ParentController
 ///   └─ Injects into child: parentData
 ///        ↓
 ///      Child
-///        ├─ Own State: ChildViewModel
+///        ├─ Own State: ChildController
 ///        ├─ Receives from parent: parentData
 ///        └─ Injects into child: childData
 ///             ↓
 ///           GrandChild
-///             ├─ Own State: GrandChildViewModel
+///             ├─ Own State: GrandChildController
 ///             └─ Receives from parent: childData
 /// ```
 abstract class ViewWidget<T extends Controller> extends StatefulWidget {
@@ -55,19 +55,19 @@ abstract class ViewWidget<T extends Controller> extends StatefulWidget {
 
   /// Override this method to provide a [Widget] to be built.
   /// ```dart
-  /// class UserProfile extends ViewWidget<UserProfileViewModel> {
+  /// class UserProfile extends ViewWidget<UserProfileController> {
   ///   final String userId;
   /// @override
-  ///   void onInit(BuildContext context, UserProfileViewModel vm) {
-  ///     vm.setUserId(userId);
+  ///   void onInit(BuildContext context, UserProfileController controller) {
+  ///     controller.setUserId(userId);
   ///   }
   /// ...
   /// }
   /// ```
-  Widget build(BuildContext context, T viewModel);
+  Widget build(BuildContext context, T controller);
 
   /// Override this method to provide a custom [onInit] callback.
-  void onInit(BuildContext context, T viewModel) {}
+  void onInit(BuildContext context, T controller) {}
 
   /// Override this method to react to widget updates.
   ///
@@ -77,17 +77,17 @@ abstract class ViewWidget<T extends Controller> extends StatefulWidget {
   ///
   /// Example:
   /// ```dart
-  /// class UserProfile extends ViewWidget<UserProfileViewModel> {
+  /// class UserProfile extends ViewWidget<UserProfileController> {
   ///   final String userId;
   ///
   ///   @override
-  ///   void onUpdate(BuildContext context, UserProfileViewModel vm) {
-  ///     vm.setUserId(userId); // ViewModel decides if reload is needed
+  ///   void onUpdate(BuildContext context, UserProfileController controller) {
+  ///     controller.setUserId(userId); // ViewModel decides if reload is needed
   ///   }
   /// ...
   /// }
   /// ```
-  void onUpdate(BuildContext context, T viewModel) {}
+  void onUpdate(BuildContext context, T controller) {}
 
   @protected
   @nonVirtual

@@ -4,7 +4,7 @@ import '../../ctrl.dart';
 ///
 /// [RepositoryData] provides a common interface for accessing data from
 /// repositories, whether mutable or immutable. It offers both direct value
-/// access and observable LiveData.
+/// access and observable Observable.
 ///
 /// See also:
 /// * [LiveRepositoryData], for immutable repository data
@@ -13,27 +13,27 @@ abstract class RepositoryData<T> {
   /// The current value.
   T get value;
 
-  /// Returns a LiveData that observes this repository data.
+  /// Returns a Observable that observes this repository data.
   Observable<T> get live;
 
   /// Transforms the data into a different type.
   ///
-  /// Returns a LiveData that applies [transform] to compute its value.
+  /// Returns a Observable that applies [transform] to compute its value.
   Observable<S> transform<S>(S Function(Observable<T> data) transform);
   void dispose();
 }
 
-/// Repository data backed by an immutable LiveData source.
+/// Repository data backed by an immutable Observable source.
 ///
-/// Wraps an existing LiveData to provide repository-style access patterns.
+/// Wraps an existing Observable to provide repository-style access patterns.
 /// Use this when you have read-only data from a repository.
 ///
 /// Example:
 /// ```dart
-/// final liveData = MutableLiveData(42);
+/// final liveData = MutableObservable(42);
 /// final repo = LiveRepositoryData(liveData);
 /// print(repo.value); // 42
-/// final observed = repo.live; // Get observable LiveData
+/// final observed = repo.live; // Get an immutable Observable
 /// ```
 class LiveRepositoryData<T> extends _SourceRepositoryData<T, Observable<T>> {
   @override
@@ -43,7 +43,7 @@ class LiveRepositoryData<T> extends _SourceRepositoryData<T, Observable<T>> {
   LiveRepositoryData(this.source);
 }
 
-/// Repository data backed by a MutableLiveData source.
+/// Repository data backed by a MutableObservable source.
 ///
 /// Provides both read and write access to repository data.
 /// Use this when you need to modify repository data.
@@ -62,7 +62,7 @@ class MutableRepositoryData<T>
 
   /// Creates a MutableRepositoryData.
   ///
-  /// Provide either [value] to create a new MutableLiveData, or [source]
+  /// Provide either [value] to create a new MutableObservable, or [source]
   /// to wrap an existing one. Optionally set a custom [changeDetector].
   ///
   /// Example:
@@ -70,8 +70,8 @@ class MutableRepositoryData<T>
   /// // Create with initial value
   /// final repo1 = MutableRepositoryData(value: 0);
   ///
-  /// // Wrap existing MutableLiveData
-  /// final liveData = MutableLiveData(0);
+  /// // Wrap existing MutableObservable
+  /// final liveData = MutableObservable(0);
   /// final repo2 = MutableRepositoryData(source: liveData);
   /// ```
   MutableRepositoryData({
@@ -86,7 +86,7 @@ class MutableRepositoryData<T>
 
   /// Sets a new value for the repository data.
   ///
-  /// Delegates to the underlying MutableLiveData source.
+  /// Delegates to the underlying MutableObservable source.
   set value(T to) {
     source.value = to;
   }

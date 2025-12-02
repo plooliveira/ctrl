@@ -14,7 +14,7 @@ part '_dispose.dart';
 /// scope is disposed. It supports hierarchical scopes through parent-child
 /// relationships, ensuring proper cleanup of resources.
 ///
-/// Commonly used within [Controller] to manage all LiveData instances, but
+/// Commonly used within [Controller] to manage all Observable instances, but
 /// can also be used standalone for managing any [ChangeNotifier] lifecycle.
 ///
 /// Example:

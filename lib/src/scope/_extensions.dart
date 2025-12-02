@@ -4,7 +4,7 @@ part of 'scope.dart';
 extension MutableDataScope on DataScope {
   /// Creates and registers a [MutableObservable] with an initial value.
   ///
-  /// This is a convenience method that creates a MutableLiveData and
+  /// This is a convenience method that creates a MutableObservable and
   /// automatically adds it to this scope for lifecycle management.
   ///
   /// Example:
@@ -17,16 +17,16 @@ extension MutableDataScope on DataScope {
     return add(MutableObservable(start));
   }
 
-  /// Creates a MutableLiveData that mirrors a source LiveData.
+  /// Creates a MutableObservable that mirrors a source Observable.
   ///
-  /// Creates a MutableLiveData that starts with the source's value and
+  /// Creates a MutableObservable that starts with the source's value and
   /// automatically updates whenever the source changes. Changes to the
-  /// returned MutableLiveData do NOT affect the source (unidirectional).
+  /// returned MutableObservable do NOT affect the source (unidirectional).
   /// The bridge is automatically cleaned up when this scope is disposed.
   ///
   /// Example:
   /// ```dart
-  /// final source = MutableLiveData(42);
+  /// final source = MutableObservable(42);
   /// final mirror = scope.bridgeFrom(source);
   /// source.value = 10; // mirror.value becomes 10
   /// mirror.value = 20; // source.value remains 10
@@ -54,9 +54,9 @@ extension MutableDataScope on DataScope {
 
 /// Extension methods for combining multiple [Observable] or [ChangeNotifier] sources.
 extension DataScopeExtensions on DataScope {
-  /// Combines multiple LiveData sources using a mediator function.
+  /// Combines multiple Observable sources using a mediator function.
   ///
-  /// Creates a LiveData that updates whenever any of the [sources] change.
+  /// Creates a Observable that updates whenever any of the [sources] change.
   /// The [mediate] function is called to compute the new value.
   ///
   /// Example:

@@ -11,7 +11,7 @@ import '../observable/observable.dart';
 /// Example:
 /// ```dart
 /// Watch(
-///   viewModel.counter,
+///   controller.counter,
 ///   builder: (context, value) {
 ///     return Text('Counter: $value');
 ///   },
@@ -54,9 +54,9 @@ class _WatchState<T> extends State<Watch<T>> with WatchMixin {
 /// Example:
 /// ```dart
 /// GroupWatch(
-///   [viewModel.name, viewModel.age],
+///   [controller.name, controller.age],
 ///   builder: (context) {
-///     return Text('${viewModel.name.value} is ${viewModel.age.value}');
+///     return Text('${controller.name.value} is ${controller.age.value}');
 ///   },
 /// )
 /// ```
@@ -85,7 +85,7 @@ class _GroupWatchState extends State<GroupWatch> with WatchMixin {
   Widget build(BuildContext context) => widget.builder(context);
 }
 
-/// Mixin that handles LiveData observation lifecycle.
+/// Mixin that handles Observable observation lifecycle.
 ///
 /// Automatically subscribes to notifiers in [initState] and
 /// unsubscribes in [dispose]. Calls [setState] when any notifier changes.
