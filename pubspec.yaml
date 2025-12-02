@@ -1,0 +1,33 @@
+name: ctrl
+description: A lightweight MVC pattern implementation with Observable objects and disposable scope for resource management for reactive state management.
+version: 0.13.1
+homepage: https://github.com/plooliveira/mvvm_kit
+repository: https://github.com/plooliveira/mvvm_kit
+issue_tracker: https://github.com/plooliveira/mvvm_kit/issues
+documentation: https://github.com/plooliveira/mvvm_kit#readme
+
+topics:
+  - mvc
+  - observer
+  - observable
+  - architecture
+  - state-management
+  - reactive
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mocktail: ^1.0.0
+
+flutter:
+
+  

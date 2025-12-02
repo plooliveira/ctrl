@@ -1,0 +1,34 @@
+part of 'scope.dart';
+
+class _MediatorLiveData<T> extends Observable<T> {
+  final T Function() mediate;
+  final List<Observable> sources;
+
+  late T _value;
+
+  @override
+  T get value => _value;
+
+  _MediatorLiveData(this.sources, this.mediate) : super() {
+    _value = mediate();
+    for (var source in sources) {
+      source.subscribe(_mediate);
+    }
+  }
+
+  void _mediate(dynamic _) {
+    final next = mediate();
+    if (changeDetector(next, _value)) {
+      _value = next;
+      notifyListeners();
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var source in sources) {
+      source.unsubscribe(_mediate);
+    }
+    super.dispose();
+  }
+}

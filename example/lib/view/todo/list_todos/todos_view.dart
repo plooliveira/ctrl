@@ -1,0 +1,113 @@
+import 'package:example_playground/data/models/todo_item.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ctrl/ctrl.dart';
+import 'todos_controller.dart';
+import '../add_todo/add_todo_bottom_sheet.dart';
+
+part 'widgets/_todo_item_widget.dart';
+part 'widgets/_todo_filter_bar.dart';
+
+class TodosRoute extends GoRoute {
+  TodosRoute()
+    : super(
+        path: '/todo',
+        name: 'todo',
+        builder: (context, state) => TodosView(),
+      );
+}
+
+class TodosView extends ViewWidget<TodosController> {
+  const TodosView({super.key});
+
+  // Override resolveController() to plug a
+  // different injection strategy. In this case, GetIt.
+  // If the type is registered as a factory, each ViewState will get its own instance
+  // (i.e. it is not a singleton). That is fine because the underlying data
+  // source (ObjectBox) is shared and reactive — multiple ViewModel instances will
+  // still observe the same data changes.
+  @override
+  TodosController resolveController(BuildContext context) =>
+      GetIt.I<TodosController>();
+
+  @override
+  Widget build(BuildContext context, TodosController controller) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Todo List Example'),
+        actions: [
+          Watch(
+            controller.completedCount,
+            builder: (context, count) {
+              if (count == 0) return const SizedBox.shrink();
+              return TextButton(
+                onPressed: controller.clearCompleted,
+                child: Text('Clear ($count)'),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Watch(
+            controller.currentFilter,
+            builder: (context, currentFilter) {
+              return _TodoFilterBar(
+                currentFilter,
+                onFilterSelected: controller.setFilter,
+              );
+            },
+          ),
+          Expanded(
+            child: Watch(
+              controller.filteredTodos,
+              builder: (context, todos) {
+                if (todos.isEmpty) {
+                  return Center(
+                    child: Watch(
+                      controller.currentFilter,
+                      builder: (context, filter) {
+                        return Text(
+                          filter == TodosFilter.all
+                              ? 'No todos yet!\nTap + to add one'
+                              : 'No ${filter.name} todos',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: todos.length,
+                  itemBuilder: (context, index) {
+                    return _TodoItemWidget(
+                      todo: todos[index],
+                      toggleTodo: controller.toggleTodo,
+                      deleteTodo: controller.deleteTodo,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => AddTodoBottomSheet(),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
