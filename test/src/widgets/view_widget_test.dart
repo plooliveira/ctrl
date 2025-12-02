@@ -12,12 +12,12 @@ void main() {
     setUp(() {
       counterViewModel = CounterViewModel();
       userViewModel = UserViewModel();
-      Pick().registerFactory<CounterViewModel>((_) => counterViewModel);
-      Pick().registerFactory<UserViewModel>((_) => userViewModel);
+      Locator().registerFactory<CounterViewModel>((_) => counterViewModel);
+      Locator().registerFactory<UserViewModel>((_) => userViewModel);
     });
 
     tearDown(() {
-      Pick().reset();
+      Locator().reset();
     });
 
     group('onInit callback', () {
@@ -138,7 +138,7 @@ void main() {
       testWidgets(
         'should throw error when ViewModel is not registered in ServiceLocator',
         (tester) async {
-          Pick().reset();
+          Locator().reset();
           // Don't register CounterViewModel
 
           // Should throw StateError
@@ -155,9 +155,9 @@ void main() {
           final parentViewModel = CounterViewModel();
           final childViewModel = CounterViewModel();
 
-          Pick().reset();
+          Locator().reset();
           var callCount = 0;
-          Pick().registerFactory<CounterViewModel>((_) {
+          Locator().registerFactory<CounterViewModel>((_) {
             callCount++;
             return callCount == 1 ? parentViewModel : childViewModel;
           });
@@ -177,8 +177,10 @@ void main() {
       testWidgets(
         'should pass props to child and rebuild child when props change',
         (tester) async {
-          Pick().reset();
-          Pick().registerFactory<CounterViewModel>((_) => CounterViewModel());
+          Locator().reset();
+          Locator().registerFactory<CounterViewModel>(
+            (_) => CounterViewModel(),
+          );
 
           // Initial build with sharedValue = 5
           await tester.pumpWidget(const ParentViewWidget(sharedValue: 5));
@@ -200,9 +202,9 @@ void main() {
         final parentViewModel = CounterViewModel();
         final childViewModel = CounterViewModel();
 
-        Pick().reset();
+        Locator().reset();
         var callCount = 0;
-        Pick().registerFactory<CounterViewModel>((_) {
+        Locator().registerFactory<CounterViewModel>((_) {
           callCount++;
           return callCount == 1 ? parentViewModel : childViewModel;
         });
@@ -367,8 +369,8 @@ void main() {
         // Use a custom ViewModel that tracks dispose
         final testViewModel = TrackableCounterViewModel();
 
-        Pick().reset();
-        Pick().registerFactory<CounterViewModel>((_) => testViewModel);
+        Locator().reset();
+        Locator().registerFactory<CounterViewModel>((_) => testViewModel);
 
         await tester.pumpWidget(const TestViewWidget());
         expect(testViewModel.isActive, isTrue);

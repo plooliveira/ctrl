@@ -9,11 +9,11 @@ void main() {
   group('Watch Widgets', () {
     setUp(() {
       final viewModel = CounterViewModel();
-      Pick().registerFactory((_) => viewModel);
+      Locator().registerFactory((_) => viewModel);
     });
 
     tearDown(() {
-      Pick().unregister<CounterViewModel>();
+      Locator().unregister<CounterViewModel>();
     });
 
     testWidgets('Watch widget displays the initial value of a LiveData', (
@@ -33,7 +33,7 @@ void main() {
       expect(find.text('Counter: 0'), findsOneWidget);
 
       // Changes the value
-      final viewModel = Pick().get<CounterViewModel>();
+      final viewModel = Locator().get<CounterViewModel>();
       viewModel.increment();
       await tester.pump();
 

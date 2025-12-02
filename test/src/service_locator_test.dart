@@ -46,10 +46,10 @@ class _ViewModel {
 
 void main() {
   group('Service Locator', () {
-    late Pick sut;
+    late Locator sut;
 
     setUp(() {
-      sut = Pick();
+      sut = Locator();
     });
 
     tearDown(() {

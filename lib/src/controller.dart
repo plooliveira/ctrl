@@ -86,7 +86,7 @@ abstract class Controller extends _LifecycleController {
   }
 }
 
-abstract class _LifecycleController extends ChangeNotifier {
+abstract class _LifecycleController {
   /// Scope for managing the lifecycle of [Observable] instances.
   ///
   /// All Observable created with [mutable] or [register] are automatically
@@ -172,10 +172,8 @@ abstract class _LifecycleController extends ChangeNotifier {
   /// ```
   void onInactive() {}
 
-  @override
   void dispose() {
     scope.dispose();
-    super.dispose();
   }
 
   /// Waits until the Controller becomes active.

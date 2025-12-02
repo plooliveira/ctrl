@@ -11,11 +11,11 @@ void main() {
 
     setUp(() {
       viewModel = CounterViewModel();
-      Pick().registerFactory<CounterViewModel>((_) => viewModel);
+      Locator().registerFactory<CounterViewModel>((_) => viewModel);
     });
 
     tearDown(() {
-      Pick().reset();
+      Locator().reset();
     });
 
     testWidgets('should resolve ViewModel from SL and initialize it', (
@@ -37,8 +37,8 @@ void main() {
       when(() => mockViewModel.isActive = true).thenReturn(true);
       when(() => mockViewModel.isActive = false).thenReturn(true);
 
-      Pick().reset();
-      Pick().registerFactory<CounterViewModel>((_) => mockViewModel);
+      Locator().reset();
+      Locator().registerFactory<CounterViewModel>((_) => mockViewModel);
 
       await tester.pumpWidget(const CounterView());
 
@@ -86,73 +86,6 @@ void main() {
       await tester.pump();
       // Should maintain previous state (false) as default block does nothing
       expect(viewModel.isActive, isFalse);
-    });
-
-    testWidgets('should rebuild when ViewModel notifies listeners', (
-      tester,
-    ) async {
-      await tester.pumpWidget(const CounterView());
-
-      // Initial state
-      expect(find.text('ViewModel Active: true'), findsOneWidget);
-
-      // Trigger a notification from ViewModel
-      viewModel.notifyListeners();
-      await tester.pump();
-
-      // Should still be active and widget should have rebuilt
-      expect(find.text('ViewModel Active: true'), findsOneWidget);
-    });
-
-    testWidgets('should batch multiple notifications via scheduleMicrotask', (
-      tester,
-    ) async {
-      int buildCount = 0;
-      final trackingViewModel = TrackingViewModel();
-      Pick().reset();
-      Pick().registerFactory<TrackingViewModel>((_) => trackingViewModel);
-
-      await tester.pumpWidget(const TrackingView());
-
-      // Get initial build count
-      final state = tester.state<TrackingViewState>(find.byType(TrackingView));
-      buildCount = state.buildCount;
-
-      // Trigger multiple notifications synchronously
-      trackingViewModel.notifyListeners();
-      trackingViewModel.notifyListeners();
-      trackingViewModel.notifyListeners();
-
-      // Pump to execute microtasks
-      await tester.pump();
-
-      // Should only rebuild once due to batching
-      expect(state.buildCount, buildCount + 1);
-    });
-
-    testWidgets('should not call setState if widget is not mounted', (
-      tester,
-    ) async {
-      // Use a custom ViewModel that we can control
-      final customViewModel = CounterViewModel();
-      Pick().reset();
-      Pick().registerFactory<CounterViewModel>((_) => customViewModel);
-
-      await tester.pumpWidget(const CounterView());
-
-      // Schedule a notification during the disposal process
-      // This tests the mounted check in _onNotifierChanged
-      customViewModel.notifyListeners();
-
-      // Dispose the widget - the scheduled microtask should check mounted
-      await tester.pumpWidget(Container());
-
-      // Pump to execute any pending microtasks
-      // The _onNotifierChanged should not call setState because mounted is false
-      await tester.pump();
-
-      // If we got here without errors, the mounted check worked
-      expect(true, isTrue);
     });
   });
 }

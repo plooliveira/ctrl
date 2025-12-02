@@ -31,12 +31,12 @@ class _Entry {
 /// final repository = SL.I.get<MyRepository>();
 /// ```
 /// Throws a [StateError] if the requested type is not registered.
-class Pick {
+class Locator {
   /// Singleton instance.
-  static final Pick instance = Pick._internal();
+  static final Locator instance = Locator._internal();
 
-  Pick._internal();
-  factory Pick() => instance;
+  Locator._internal();
+  factory Locator() => instance;
 
   final Map<Type, _Entry> _entries = HashMap();
 

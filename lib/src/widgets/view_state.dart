@@ -40,7 +40,7 @@ abstract class ViewState<T extends Controller, W extends StatefulWidget>
   /// By default, it retrieves the ViewModel from the service locator.
   /// Override this method to provide a custom ViewModel instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
   @protected
-  T resolveController() => Pick().get();
+  T resolveController() => Locator().get();
 
   /// The ViewModel instance associated with this ViewState.
   late final T controller = resolveController();
@@ -49,13 +49,11 @@ abstract class ViewState<T extends Controller, W extends StatefulWidget>
   @override
   void initState() {
     super.initState();
-    controller.addListener(_onNotifierChanged);
     controller.isActive = true;
   }
 
   @override
   void dispose() {
-    controller.removeListener(_onNotifierChanged);
     _disposeController();
     super.dispose();
   }
@@ -65,15 +63,6 @@ abstract class ViewState<T extends Controller, W extends StatefulWidget>
     debugLog(
       'Disposed ViewModel: ${controller.runtimeType}, from View: ${widget.runtimeType}',
     );
-  }
-
-  void _onNotifierChanged() {
-    if (_isUpdateScheduled) return;
-    _isUpdateScheduled = true;
-    scheduleMicrotask(() {
-      _isUpdateScheduled = false;
-      if (mounted) setState(() {});
-    });
   }
 
   /// Synchronizes ViewModel.isActive with app lifecycle state. If you need to override, be sure to call super.didChangeAppLifecycleState.

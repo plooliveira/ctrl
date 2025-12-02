@@ -9,8 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Register ViewModels using the built-in service locator
-  Pick().registerFactory((_) => CounterController());
-  Pick().registerFactory((_) => ProductFormController());
+  Locator().registerFactory((_) => CounterController());
+  Locator().registerFactory((_) => ProductFormController());
 
   // Register GetIt dependencies for the Todo feature
   await TodosDependencies().setup();
@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'MVVM Kit Playground',
+      title: 'Ctrl Playground',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         colorScheme: ColorScheme(

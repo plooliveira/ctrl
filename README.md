@@ -21,15 +21,15 @@ This package is still in early development. While it is functional, there may be
 
 ## Overview 
 
-This package provides a simple and lightweight implementation of MVC pattern with  for Flutter applications. It is designed to be easy to use and to help you write clean, testable, and maintainable code.
+This package provides a simple and lightweight implementation of MVC pattern with for Flutter applications. It is designed to be easy to use and to help you write clean, testable, and maintainable code.
 
-The core of the package is the `LiveData` class, which is an observable data holder that can be observed by UI components. When the data changes, the UI is automatically updated.
+The core component of the package is the Observable, a reactive data holder that notifies UI components whenever its value changes, triggering automatic UI updates.
 
-The package also provides a `ViewModel` class, which is a base class for your view models. The `ViewModel` class manages the lifecycle of `LiveData` objects and provides a way to handle long-running actions.
+The package also provides a `Controller` class, which is a base class for your controllers. The `Controller` class manages the lifecycle of `Observable` objects using the flutter widget lifecycle.F
 
 ## Installation
 
-To use this package, add `mvvm_kit` as a dependency running `pub add mvvm_kit` or by adding it to your `pubspec.yaml`.
+To use this package, add `Ctrl` as a dependency by running `pub add ctrl` or by adding it to your `pubspec.yaml`.
 
 
 ## Usage
@@ -38,12 +38,12 @@ To use this package, add `mvvm_kit` as a dependency running `pub add mvvm_kit` o
 
 Here is a simple example of how to use the package to create a counter application.
 
-**1. Create a `ViewModel`**
+**1. Create a `Controller`**
 
 ```dart
 import 'package:ctrl/ctrl.dart';
 
-class CounterViewModel extends ViewModel {
+class CounterController extends Controller {
   final _counter = mutable(0);
   LiveData<int> get counter => _counter;
 
@@ -89,11 +89,11 @@ class CounterView extends StatefulWidget {
   State<CounterView> createState() => _CounterViewState();
 }
 
-class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
+class _CounterViewState extends ViewState<CounterController, CounterView> {
   // By default, ViewState uses a built-in service locator for dependency injection.
-  // You can override resolveViewModel() to provide a different injection strategy. e.g. Constructor injection, GetIt, Provider, etc.
+  // You can override resolveController() to provide a different injection strategy. e.g. Constructor injection, GetIt, Provider, etc.
   // @override
-  // CounterViewModel resolveViewModel() => GetIt.I();
+  // CounterController resolveController() => GetIt.I();
 
   @override
   Widget build(BuildContext context) {
@@ -116,16 +116,16 @@ class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
 }
 ```
 
-Don't forget to register your `CounterViewModel` in the service locator before running the app:
+Don't forget to register your `CounterController` in the service locator before running the app:
 
 ```dart
-import 'counter_viewmodel.dart';
+import 'counter_controller.dart';
 import 'package:ctrl/ctrl.dart';
 
 void setupLocator() {
-  SL.I.registerFactory(() => CounterViewModel());
+  SL.I.registerFactory(() => CounterController());
   // Or using other service locators like GetIt
-  // GetIt.I.registerFactory<CounterViewModel>(() => CounterViewModel());
+  // GetIt.I.registerFactory<CounterController>(() => CounterController());
 }
 
 void main() {
@@ -141,7 +141,7 @@ You can use `GroupWatch` to listen to multiple `LiveData` objects at once. You c
 ```dart
 import 'package:ctrl/ctrl.dart';
 
-class PersonViewModel extends ViewModel {
+class PersonController extends Controller {
   final _name = mutable('John Doe');
   final _age = mutable(30);
   
@@ -164,7 +164,7 @@ class PersonViewModel extends ViewModel {
 import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
 
-import 'person_viewmodel.dart';
+import 'person_controller.dart';
 
 class PersonView extends StatefulWidget {
   const PersonView({super.key});
@@ -173,7 +173,7 @@ class PersonView extends StatefulWidget {
   State<PersonView> createState() => _PersonViewState();
 }
 
-class _PersonViewState extends ViewState<PersonViewModel, PersonView> {
+class _PersonViewState extends ViewState<PersonController, PersonView> {
 
   @override
   Widget build(BuildContext context) {
@@ -200,8 +200,8 @@ class _PersonViewState extends ViewState<PersonViewModel, PersonView> {
 }
 ```
 
-## Minimalist built-in service locator (SL)
-The package includes a minimalist built-in service locator called `SL` that you can use to register and retrieve your `ViewModel` instances or other dependencies.
+## Minimalist built-in service locator (Pick)
+The package includes a minimalist built-in service locator called `Pick` that you can use to register and retrieve your `Controller` instances or other dependencies.
 There is no asynchronous support, no scopes, no modules, no tags support. You can register factories, singletons, or lazy singletons. This is useful for all kinds of applications that has a straightforward dependency graph.
 You can register your dependencies like this:
 
@@ -209,19 +209,17 @@ You can register your dependencies like this:
 import 'package:ctrl/ctrl.dart'; 
 
 // As factory
-SL.instance.registerFactory(() => CounterViewModel());
-// As singleton (Use the shortcut .I for convenience)
-SL.I.registerSingleton(CounterRepository());
+Locator().registerFactory(() => CounterController());
 // As lazy singleton
-SL.I.registerLazySingleton(() => CounterService());
+Locator().registerLazySingleton(() => CounterController());
 ```
 
 You can resolve dependencies with constructor injection like this:
 
 ```dart
-SL.I.registerSingleton(CounterRepository());
-SL.I.registerLazySingleton(() => CounterService());
-SL.I.registerFactory((i) => CounterViewModel(
+Locator().registerSingleton(CounterRepository());
+Locator().registerLazySingleton(() => CounterService());
+Locator().registerFactory((i) => CounterController(
   repository: i(),
   service: i(),
 ));
@@ -230,19 +228,19 @@ SL.I.registerFactory((i) => CounterViewModel(
 And use abstract types or interfaces:
 
 ```dart
-SL.I.registerSingleton<CounterRepository>(CounterRepositoryImpl());
+Locator().registerSingleton<CounterRepository>(CounterRepositoryImpl());
 ```
 
 To retrieve any registered type, use:
 
 ```dart
-final counterViewModel = SL.I.get<CounterViewModel>();
+final counterViewModel = Locator().get<CounterViewModel>();
 ```
 
 or by type inference:
 
 ```dart
-final CounterViewModel counterViewModel = SL.I.get();
+final CounterViewModel counterViewModel = Locator().get();
 ```
 
 Ps: The ViewState class uses this service locator by default to create ViewModel instances. You can override the `resolveViewModel()` method to use a different dependency injection strategy if needed.
