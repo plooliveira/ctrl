@@ -8,14 +8,14 @@ import '../../core/theme/theme_mode.dart';
 
 part 'widgets/_theme_preview.dart';
 
-// Here an example that uses Provider package to provide the ViewModel to the View.
+// Here an example that uses Provider package to provide the Controller to the View.
 class ThemeRoute extends GoRoute {
   ThemeRoute()
     : super(
         path: '/theme',
         name: 'theme',
         builder: (context, state) =>
-            // You can isolate the ViewModel to be used only within this widget subtree
+            // You can isolate the Controller to be used only within this widget subtree
             Provider(
               create: (_) => ThemeController(),
               child: const ThemeView(),

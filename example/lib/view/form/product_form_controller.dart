@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:example_playground/data/models/product.dart';
 import 'package:ctrl/ctrl.dart';
 
-// In this ViewModel, we manage a simple product form with fields for name, price, and availability.
-// The MutableLiveData hold the product data and .update method updates each field individually.
+// In this Controller, we manage a simple product form with fields for name, price, and availability.
+// The Observable hold the product data and .update method updates each field individually.
 
 class ProductFormController extends Controller {
   late final _product = mutable(
@@ -11,7 +11,7 @@ class ProductFormController extends Controller {
   );
   Observable<ProductModel> get product => _product;
 
-  // Transformed LiveData to output JSON representation of the product
+  // Transformed Observable to output JSON representation of the product
   late final jsonOutput = product.transform(
     (data) => const JsonEncoder.withIndent('  ').convert(data.value.toJson()),
   );

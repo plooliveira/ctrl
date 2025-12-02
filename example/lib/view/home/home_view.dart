@@ -20,7 +20,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'MVVM Kit Playground',
+          'CTRL Playground',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         centerTitle: true,
@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
             _ExampleCard(
               title: '1. Counter (Cascade)',
               description:
-                  'Basic ViewModel + LiveData and ViewWidget with cascade state',
+                  'Basic Controller + Observable and ViewWidget with cascade state',
               icon: Icons.add_circle_outline,
               onTap: () => context.push('/counter-cascade'),
             ),
@@ -42,7 +42,7 @@ class HomeView extends StatelessWidget {
             _ExampleCard(
               title: '1. Counter',
               description:
-                  'Basic ViewModel + LiveData + ViewState with loading states',
+                  'Basic Controller + Observable + ViewWidget with loading states',
               icon: Icons.add_circle_outline,
               onTap: () => context.push('/counter'),
             ),
@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
 
             _ExampleCard(
               title: '4. Product Form',
-              description: 'LiveData.update() demonstration',
+              description: 'Observable.update() demonstration',
               icon: Icons.edit_document,
               onTap: () => context.push('/product-form'),
               enabled: true,
@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
 
             _ExampleCard(
               title: '2. Theme Switcher',
-              description: 'HotswapLiveData demonstration',
+              description: 'HotswapObservable demonstration',
               icon: Icons.palette_outlined,
               onTap: () => context.push('/theme'),
               enabled: true,

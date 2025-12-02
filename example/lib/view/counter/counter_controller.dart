@@ -1,7 +1,7 @@
 import 'package:ctrl/ctrl.dart';
 
 class CounterController extends Controller {
-  // MutableLiveData created with mutable() is auto-disposed by the ViewModel's scope
+  // Observable created with mutable() is auto-disposed by the Controller's scope
   late final _counter = mutable(0);
   Observable<int> get counter => _counter;
 
