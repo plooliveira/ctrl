@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
 import 'package:mocktail/mocktail.dart';
 
-// Mock para o ViewModel
 class MockCounterViewModel extends Mock implements CounterViewModel {}
 
-// ViewModel de teste real
 class CounterViewModel with Ctrl {
   late final counter = mutable(0);
 
   void increment() => counter.value++;
 }
 
-// ViewModel que rastreia chamadas de dispose
 class TrackableCounterViewModel extends CounterViewModel {
   int disposeCallCount = 0;
 
@@ -23,12 +20,10 @@ class TrackableCounterViewModel extends CounterViewModel {
   }
 }
 
-// ViewModel para rastrear notificações
 class TrackingViewModel with Ctrl {
   late final counter = mutable(0);
 }
 
-// View para rastrear builds
 class TrackingView extends StatefulWidget {
   const TrackingView({super.key});
 
@@ -73,20 +68,13 @@ class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
   }
 }
 
-// Mock para LiveData
-class MockLiveData<T> extends Mock implements Observable<T> {}
+class MockObservable<T> extends Mock implements Observable<T> {}
 
-// ViewModel para GroupWatch
 class ProfileViewModel with Ctrl {
   late final name = mutable('John');
   late final age = mutable(30);
 }
 
-// ============================================
-// ViewWidget Test Mocks
-// ============================================
-
-// ViewModel para testes de ViewWidget
 class UserViewModel with Ctrl {
   late final userId = mutable<String?>(null);
   late final userData = mutable<String>('No data');
@@ -104,7 +92,6 @@ class UserViewModel with Ctrl {
   }
 }
 
-// Classe para rastrear callbacks
 class CallbackTracker {
   int onInitCallCount = 0;
   int onUpdateCallCount = 0;
@@ -119,7 +106,6 @@ class CallbackTracker {
   }
 }
 
-// ViewWidget básico para testes
 class TestViewWidget extends ViewWidget<CounterViewModel> {
   final CallbackTracker? tracker;
 
@@ -157,7 +143,6 @@ class TestViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-// ViewWidget simples sem MaterialApp para testes de múltiplas instâncias
 class SimpleTestViewWidget extends ViewWidget<CounterViewModel> {
   const SimpleTestViewWidget({super.key});
 
@@ -170,7 +155,6 @@ class SimpleTestViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-// ViewWidget com props para testes de CSC
 class UserProfileWidget extends ViewWidget<UserViewModel> {
   final String userId;
   final CallbackTracker? tracker;
@@ -207,14 +191,13 @@ class UserProfileWidget extends ViewWidget<UserViewModel> {
   }
 }
 
-// ViewWidget com custom resolveViewModel
 class CustomResolveViewWidget extends ViewWidget<CounterViewModel> {
   final CounterViewModel? customViewModel;
 
   const CustomResolveViewWidget({super.key, this.customViewModel});
 
   @override
-  CounterViewModel? resolveCtrl(BuildContext context) => CounterViewModel();
+  CounterViewModel? resolveCtrl(BuildContext context) => customViewModel;
 
   @override
   Widget build(BuildContext context, CounterViewModel viewModel) {
@@ -229,7 +212,6 @@ class CustomResolveViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-// Parent ViewWidget para testes de CSC
 class ParentViewWidget extends ViewWidget<CounterViewModel> {
   final int sharedValue;
 
@@ -250,7 +232,6 @@ class ParentViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-// Child ViewWidget para testes de CSC
 class ChildViewWidget extends ViewWidget<CounterViewModel> {
   final int parentValue;
 

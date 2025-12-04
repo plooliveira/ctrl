@@ -78,7 +78,7 @@ void main() {
     testWidgets('WatchMixin correctly removes listener on dispose', (
       tester,
     ) async {
-      final mockNotifier = MockLiveData<int>();
+      final mockNotifier = MockObservable<int>();
       when(() => mockNotifier.value).thenReturn(0);
       when(() => mockNotifier.addListener(any())).thenAnswer((_) {});
       when(() => mockNotifier.removeListener(any())).thenAnswer((_) {});
