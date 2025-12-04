@@ -1,10 +1,10 @@
 name: ctrl
 description: A lightweight MVC pattern implementation with Observable objects and disposable scope for resource management for reactive state management.
-version: 0.13.1
-homepage: https://github.com/plooliveira/mvvm_kit
-repository: https://github.com/plooliveira/mvvm_kit
-issue_tracker: https://github.com/plooliveira/mvvm_kit/issues
-documentation: https://github.com/plooliveira/mvvm_kit#readme
+version: 1.0.0
+homepage: https://github.com/plooliveira/ctrl
+repository: https://github.com/plooliveira/ctrl
+issue_tracker: https://github.com/plooliveira/ctrl/issues
+documentation: https://github.com/plooliveira/ctrl#readme
 
 topics:
   - mvc
