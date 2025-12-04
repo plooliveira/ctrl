@@ -1,10 +1,10 @@
 # Ctrl Playground
 
-This is a **demonstration playground** for the [ctrl](https://pub.dev/packages/ctrl) package, illustrating the practical implementation of the **MVVM (Model-View-ViewModel)** pattern combined with **Observable** in different real-world Flutter development scenarios.
+This is a **demonstration playground** for the [ctrl](https://github.com/plooliveira/ctrl) package, illustrating the practical implementation of **Ctrl** capabilities in different real-world Flutter development scenarios.
 
 ## 🎯 Purpose
 
-The playground demonstrates how to implement the MVVM + Observable pattern in various contexts, including:
+The playground demonstrates how to use the Ctrl package in various contexts, including:
 
 - Reactive state management with Observable
 - Complex object manipulation with Observable.update()
@@ -16,7 +16,7 @@ The playground demonstrates how to implement the MVVM + Observable pattern in va
 ## 📋 Included Examples
 
 ### 1. Counter
-Basic demonstration of Observable and loading states, ideal for understanding the pattern's fundamentals.
+Basic demonstration of Observable and loading states, ideal for understanding the fundamentals.
 
 ### 2. Theme Switcher
 Demonstrates HotswapObservable for dynamically switching between different Observable sources at runtime.
@@ -30,13 +30,13 @@ Complete example with Repository Pattern, demonstrating reactive integration wit
 
 ## 🏗️ Project Structure
 
-This project follows a **simple and pragmatic structure**, focused on demonstrating the use of `mvvm_kit` in a clear and didactic way:
+This project follows a **simple and pragmatic structure**, focused on demonstrating the use of `Ctrl` in a clear and didactic way:
 
 ```
 lib/
 ├── core/           # Settings, routes and shared components
 ├── data/           # Models, repositories and data layer
-├── view/           # Views and ViewModels
+├── view/           # Views and Ctrl classes (Controllers/ViewModels)
 └── main.dart       # Application entry point
 ```
 

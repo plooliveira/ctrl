@@ -1,7 +1,7 @@
 import 'package:example_playground/data/repositories/todo_repository.dart';
 import 'package:example_playground/data/database/objectbox.g.dart';
 import 'package:example_playground/view/todo/add_todo/add_todo_viewmodel.dart';
-import 'package:example_playground/view/todo/list_todos/todos_controller.dart';
+import 'package:example_playground/view/todo/list_todos/todos_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class AppDependencies {
@@ -16,7 +16,7 @@ class TodosDependencies extends AppDependencies {
     GetIt.I.registerFactory<TodoRepository>(
       () => ObjectBoxTodoRepository(GetIt.I<Store>()),
     );
-    GetIt.I.registerFactory(() => TodosController(GetIt.I<TodoRepository>()));
-    GetIt.I.registerFactory(() => AddTodoController(GetIt.I<TodoRepository>()));
+    GetIt.I.registerFactory(() => TodosViewModel(GetIt.I<TodoRepository>()));
+    GetIt.I.registerFactory(() => AddTodoViewModel(GetIt.I<TodoRepository>()));
   }
 }

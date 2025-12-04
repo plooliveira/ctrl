@@ -8,20 +8,20 @@ import 'add_todo_viewmodel.dart';
 class AddTodoBottomSheet extends StatefulWidget {
   const AddTodoBottomSheet({super.key, this.viewModel});
 
-  final AddTodoController? viewModel;
+  final AddTodoViewModel? viewModel;
 
   @override
   State<AddTodoBottomSheet> createState() => _AddTodoBottomSheetState();
 }
 
 class _AddTodoBottomSheetState
-    extends ViewState<AddTodoController, AddTodoBottomSheet> {
+    extends ViewState<AddTodoViewModel, AddTodoBottomSheet> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
   @override
-  AddTodoController resolveCtrl() =>
-      widget.viewModel ?? GetIt.I<AddTodoController>();
+  AddTodoViewModel resolveCtrl() =>
+      widget.viewModel ?? GetIt.I<AddTodoViewModel>();
 
   @override
   void initState() {

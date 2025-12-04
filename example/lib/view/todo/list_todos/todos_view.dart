@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ctrl/ctrl.dart';
-import 'todos_controller.dart';
+import 'todos_viewmodel.dart';
 import '../add_todo/add_todo_bottom_sheet.dart';
 
 part 'widgets/_todo_item_widget.dart';
@@ -18,7 +18,7 @@ class TodosRoute extends GoRoute {
       );
 }
 
-class TodosView extends ViewWidget<TodosController> {
+class TodosView extends ViewWidget<TodosViewModel> {
   const TodosView({super.key});
 
   // Override resolveController() to plug a
@@ -28,11 +28,10 @@ class TodosView extends ViewWidget<TodosController> {
   // source (ObjectBox) is shared and reactive — multiple ViewModel instances will
   // still observe the same data changes.
   @override
-  TodosController resolveCtrl(BuildContext context) =>
-      GetIt.I<TodosController>();
+  TodosViewModel resolveCtrl(BuildContext context) => GetIt.I<TodosViewModel>();
 
   @override
-  Widget build(BuildContext context, TodosController controller) {
+  Widget build(BuildContext context, TodosViewModel controller) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todo List Example'),
