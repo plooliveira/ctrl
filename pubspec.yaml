@@ -1,6 +1,6 @@
 name: ctrl
 description: A lightweight MVC pattern implementation with Observable objects and disposable scope for resource management for reactive state management.
-version: 1.0.0
+version: 0.2.0
 homepage: https://github.com/plooliveira/ctrl
 repository: https://github.com/plooliveira/ctrl
 issue_tracker: https://github.com/plooliveira/ctrl/issues

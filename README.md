@@ -47,7 +47,7 @@ Add `ctrl` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ctrl: ^1.0.0
+  ctrl: ^0.2.0
 ```
 
 ## Usage
