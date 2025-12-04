@@ -8,7 +8,7 @@ import '../../core/theme/theme_mode.dart';
 // Of course that is not necessary for themes, but it serves as a good example of how to use
 // HotswapObservable in a Controller.
 
-class ThemeController extends Controller {
+class ThemeController with Ctrl {
   late final _lightTheme = mutable(AppThemes.light());
   late final _darkTheme = mutable(AppThemes.dark());
   late final _customTheme = mutable(AppThemes.custom());

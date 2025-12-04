@@ -5,7 +5,7 @@ import '../ctrl.dart';
 
 /// Base class for Controllers in the MVC pattern.
 ///
-/// [Controller] manages the business logic for the UI layer.
+/// [Ctrl] manages the business logic for the UI layer.
 /// It provides lifecycle management, automatic
 /// disposal of [Observable] and other [ChangeNotifier] objects through [DataScope], and built-in loading state management.
 ///
@@ -36,18 +36,14 @@ import '../ctrl.dart';
 /// * [ViewState], for connecting Controllers to widgets
 /// * [Observable] and [MutableObservable], for observable data
 /// * [DataScope], for managing Observable lifecycle
-abstract class Controller extends _LifecycleController {
-  Controller() {
-    _isLoading = mutable(false);
-  }
-
+mixin Ctrl {
   /// Observable flag indicating if a long-running action is in progress.
   ///
   /// You can Use [beginLoading] and [completeLoading] to control this flag manually,
   /// or use [executeAsync] to automatically manage it around asynchronous operations with error catching.
 
   Observable<bool> get isLoading => _isLoading;
-  late final MutableObservable<bool> _isLoading;
+  late final MutableObservable<bool> _isLoading = mutable(false);
 
   /// Marks the start of a long-running action.
   ///
@@ -84,9 +80,9 @@ abstract class Controller extends _LifecycleController {
       completeLoading();
     }
   }
-}
 
-abstract class _LifecycleController {
+  // Lifecycle methods
+
   /// Scope for managing the lifecycle of [Observable] instances.
   ///
   /// All Observable created with [mutable] or [register] are automatically

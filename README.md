@@ -1,114 +1,112 @@
-  <br/>
-  <br/>
-  <p align="center">
-    <img src="mvvm_kit_logo.png" alt="mvvm_kit logo" width="500">
-  </p>
+# Ctrl
 
-<br/>
+Ctrl is a package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
 
-<!-- [![ ](https://img.shields.io/pub/v/mvvm_kit.svg)](https://pub.dev/packages/mvvm_kit) &nbsp; [![Build Status](https://github.com/plooliveira/mvvm_kit/actions/workflows/test.yaml/badge.svg)](https://github.com/plooliveira/mvvm_kit/actions) -->
+It provides a simple way to manage state in your Flutter applications without enforcing a specific architectural pattern. You can use it with MVVM, MVC, MVP, or any other structure you prefer.
 
-⚡️ Granular reactivity <br/>
-🧪 Highly testable <br/>
-👀 Predictable <br/>
-🛡️ Safe <br/>
-🧩 Versatile <br/>
-📈 Scalable <br/>
-💜 Enjoyable <br/>
+## Features
 
-## Disclaimer
-This package is still in early development. While it is functional, there may be breaking changes in future releases as we continue to improve and refine the API. So please use it with caution in production applications.
+-   **Observables**: Reactive data holders that notify listeners when their value changes.
+-   **Scopes**: A mechanism to manage the lifecycle of your observables.
+-   **Lifecycle Linkage**: Automatically initializes and disposes of your scopes and observables when the Widget is created and destroyed.
+-   **Pattern Agnostic**: Does not force you to use a specific architecture.
 
-## Overview 
+## Deep Dive: Observable
 
-This package provides a simple, lightweight implementation of the MVC pattern for Flutter applications. It focuses on ease of use and helps you write clean, testable, and maintainable code.
+`Observable` is the core of this package. It is an enhanced version of Flutter's `ChangeNotifier` that provides more power and flexibility.
 
-At its core is the Observable, a reactive data holder that notifies UI components when its value changes, automatically updating the interface.
+Unlike a standard `ChangeNotifier`, an `Observable`:
+-   Holds a value and by default notifies listeners only when the value changes(You can use emitAll to notify listeners even if the value hasn't changed).
+-   Allows you to define custom equality logic via `changeDetector`.
+-   Can be granularly forced to notify listeners even if the value hasn't changed using `reload()`.
 
-The package also includes a Controller base class that manages Observable instances throughout the widget lifecycle using scoped lifetimes, ensuring proper initialization and disposal.
+### Advanced Features
+
+The package comes with a set of useful extensions to manipulate your data, like:
+
+-   **transform**: Creates a new observable that is derived from the original one. It updates automatically when the source changes.
+-   **mirror**: Creates a read-only view of a mutable observable.
+-   **hotswappable**: Allows you to dynamically switch the underlying source of the observable.
+-   **filtered**: (For Lists) Creates a new observable list that only contains elements that satisfy a condition.
+-   **notNull**: (For Lists) Creates a new observable list with all null values removed.
+
+## Deep Dive: Scopes
+
+Scopes are used to manage the lifecycle of your observables. They are automatically initialized and disposed of when the Widget is created and destroyed.
+
+Observables have an internal scope. Dependent observables like transformed, inherit the scope of their source. So when the source is disposed, the dependent observables are disposed as well.
 
 ## Installation
 
-To use this package, add `Ctrl` as a dependency by running `pub add ctrl` or by adding it to your `pubspec.yaml`.
+Add `ctrl` to your `pubspec.yaml`:
 
+```yaml
+dependencies:
+  ctrl: ^1.0.0
+```
 
 ## Usage
 
-### Simple Example
+### 1. Create a Ctrl class (Controller / ViewModel / Store)
 
-Here is a simple example of how to use the package to create a counter application.
-
-**1. Create a `Controller`**
+Use the `Ctrl` mixin to add scope management capabilities to your class. You can create observables using the `mutable` method.
 
 ```dart
 import 'package:ctrl/ctrl.dart';
 
-class CounterController extends Controller {
-  final _counter = mutable(0);
-  LiveData<int> get counter => _counter;
+class CounterController with Ctrl {
+  // Create a mutable observable
+  late final count = mutable(0);
 
-  void increment() => _counter.value++;
+  // Create a derived observable
+  late final doubleCount = count.transform((data) => data.value * 2);
+
+  void increment() {
+    count.value++;
+  }
 }
 ```
 
-**2. Create a `View` using `ViewWidget`**
+### 2. Connect to a Widget
 
-This widget is a simple way to create a view. It uses the cascade state composition pattern where each widget maintains its own isolated ViewModel while cascading state changes to children through reactive constructor injection. See more details on the [ViewWidget](https://pub.dev/documentation/mvvm_kit/latest/mvvm_kit/ViewWidget-class.html) class documentation.
- 
-```dart
-class CounterView extends ViewWidget<CounterViewModel> {
-  const CounterView({super.key});
+You can use `ViewWidget` or `ViewState` to connect your Ctrl class to the widget lifecycle.
 
-  @override
-  Widget build(BuildContext context, CounterViewModel viewModel) => Scaffold(
-    body: Watch(
-      viewModel.counter,
-      builder: (context, value) => Text('$value'),
-    ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: viewModel.increment,
-      child: const Icon(Icons.add),
-    ),
-  );
-}
-```
+#### Using ViewWidget
 
-**2. Create a `View` using `ViewState`**
-To have full controll of the view lifecycle, you can use the `ViewState` class. See more details on the [ViewState](https://pub.dev/documentation/mvvm_kit/latest/mvvm_kit/ViewState-class.html) class documentation.
+`ViewWidget` is perfect for simple widgets. It handles the creation and disposal of the Ctrl class for you.
+
+You can access your 'Ctrl class' using the `ctrl` property. This property is an accessor that points to the instance of your Ctrl class.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
 
-import 'counter_viewmodel.dart';
-
-class CounterView extends StatefulWidget {
-  const CounterView({super.key});
+class CounterPage extends ViewWidget<CounterController> {
+  const CounterPage({super.key});
 
   @override
-  State<CounterView> createState() => _CounterViewState();
-}
-
-class _CounterViewState extends ViewState<CounterController, CounterView> {
-  // By default, ViewState uses a built-in service locator for dependency injection.
-  // You can override resolveController() to provide a different injection strategy. e.g. Constructor injection, GetIt, Provider, etc.
-  // @override
-  // CounterController resolveController() => GetIt.I();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, CounterController ctrl) {
+    // You can rename 'ctrl' to whatever you want, e.g., 'viewModel' or 'store'
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Counter'),
-      ),
+      appBar: AppBar(title: const Text('Counter')),
       body: Center(
-        child: Watch(
-          viewModel.counter,
-          builder: (context, value) => Text('$value'),
+        // Watch the observable for changes
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Watch(
+              ctrl.count,
+              builder: (context, value) => Text('Count: $value'),
+            ),
+            Watch(
+              ctrl.doubleCount,
+              builder: (context, value) => Text('Double: $value'),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: viewModel.increment,
+        onPressed: ctrl.increment,
         child: const Icon(Icons.add),
       ),
     );
@@ -116,153 +114,59 @@ class _CounterViewState extends ViewState<CounterController, CounterView> {
 }
 ```
 
-Don't forget to register your `CounterController` in the service locator before running the app:
+#### Using ViewState
 
-```dart
-import 'counter_controller.dart';
-import 'package:ctrl/ctrl.dart';
-
-void setupLocator() {
-  SL.I.registerFactory(() => CounterController());
-  // Or using other service locators like GetIt
-  // GetIt.I.registerFactory<CounterController>(() => CounterController());
-}
-
-void main() {
-  setupLocator();
-  runApp(const MyApp());
-}
-```
-
-### Listen to multiple LiveData
-
-You can use `GroupWatch` to listen to multiple `LiveData` objects at once. You can also use the `onActive` and `onInactive` callbacks in your `ViewModel` to perform actions when the view becomes active or inactive.
-
-```dart
-import 'package:ctrl/ctrl.dart';
-
-class PersonController extends Controller {
-  final _name = mutable('John Doe');
-  final _age = mutable(30);
-  
-  LiveData<String> get name => _name;
-  LiveData<int> get age => _age;
-
-  @override
-  void onActive() {
-    // Perform actions when the view becomes active
-  }
-  
-  @override
-  void onInactive() {
-    // Perform actions when the view becomes inactive
-  }
-}
-```
+For more complex scenarios where you need full access to the `State` lifecycle, use `ViewState`.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
 
-import 'person_controller.dart';
-
-class PersonView extends StatefulWidget {
-  const PersonView({super.key});
+class CounterPage extends StatefulWidget {
+  const CounterPage({super.key});
 
   @override
-  State<PersonView> createState() => _PersonViewState();
+  State<CounterPage> createState() => _CounterPageState();
 }
 
-class _PersonViewState extends ViewState<PersonController, PersonView> {
-
+class _CounterPageState extends ViewState<CounterController, CounterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Group Watch Example'),
-      ),
+      appBar: AppBar(title: const Text('Counter')),
       body: Center(
-        child: GroupWatch(
-          [viewModel.name, viewModel.age],
-          builder: (context) {
-            final name = viewModel.name.value;
-            final age = viewModel.age.value;
-
-            return Text(
-              '$name is $age years old.',
-              style: Theme.of(context).textTheme.headlineMedium,
-            );
-          },
+        child: Watch(
+          controller.count,
+          builder: (context, value) => Text('Count: $value'),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 ```
 
-## Minimalist built-in service locator (Pick)
-The package includes a minimalist built-in service locator called `Pick` that you can use to register and retrieve your `Controller` instances or other dependencies.
-There is no asynchronous support, no scopes, no modules, no tags support. You can register factories, singletons, or lazy singletons. This is useful for all kinds of applications that has a straightforward dependency graph.
-You can register your dependencies like this:
+### Dependency Injection
+
+By default, `Ctrl` uses a simple built-in service locator. You can register your controllers before using them.
 
 ```dart
-import 'package:ctrl/ctrl.dart'; 
-
-// As factory
-Locator().registerFactory(() => CounterController());
-// As lazy singleton
-Locator().registerLazySingleton(() => CounterController());
+void main() {
+  // Register the controller factory
+  Locator().registerFactory(() => CounterController());
+  
+  runApp(const MyApp());
+}
 ```
 
-You can resolve dependencies with constructor injection like this:
+You can also override `resolveCtrl` in your `ViewWidget` or `ViewState` to use any other dependency injection solution (like GetIt, Provider, etc.).
 
 ```dart
-Locator().registerSingleton(CounterRepository());
-Locator().registerLazySingleton(() => CounterService());
-Locator().registerFactory((i) => CounterController(
-  repository: i(),
-  service: i(),
-));
+@override
+CounterController resolveCtrl(BuildContext context) {
+  return GetIt.I.get<CounterController>();
+}
 ```
-
-And use abstract types or interfaces:
-
-```dart
-Locator().registerSingleton<CounterRepository>(CounterRepositoryImpl());
-```
-
-To retrieve any registered type, use:
-
-```dart
-final counterController = Locator().get<CounterController>();
-```
-
-or by type inference:
-
-```dart
-final CounterController counterController = Locator().get();
-```
-
-Ps: The ViewState class uses this service locator by default to create Controller instances. You can override the `resolveController()` method to use a different dependency injection strategy if needed.
-```dart
-  class _CounterViewState extends ViewState<CounterController, CounterView> {
-    @override
-    CounterController resolveController() => widget.controller;
-    // ...
-  }
-```
-
-## Key Features
-
-- **Observable**: Reactive data holders that notify observers when values change,
-- **Controller**: Lifecycle-aware UI logic layer with automatic resource management
-- **Watch/GroupWatch**: Widgets for observing Observable changes
-- **DataScope**: Container that automatically disposes Observable instances when no longer needed, preventing memory leaks
-- **Transformations**: `transform()`, `filtered()`, `mirror()` for data manipulation
-- **HotswapObservable**: Dynamically switch between data sources
-- **RepositoryData**: Pattern for integrating data layers with caching and refreshing capabilities
-- **Built-in Service Locator**: Minimalist service locator for dependency injection
-
-## Documentation
-
-<!-- For more detailed documentation, please visit the [MVVM Kit Library reference](https://pub.dev/documentation/mvvm_kit/latest/mvvm_kit/). -->

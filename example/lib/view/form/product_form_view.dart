@@ -37,7 +37,7 @@ class _ProductFormViewState
   }
 
   void _clearForm() {
-    controller.clearForm();
+    ctrl.clearForm();
     _nameController.clear();
     _priceController.clear();
     FocusScope.of(context).unfocus();
@@ -55,11 +55,11 @@ class _ProductFormViewState
             _FormCard(
               nameController: _nameController,
               priceController: _priceController,
-              viewModel: controller,
+              viewModel: ctrl,
             ),
             const SizedBox(height: 24),
             Watch(
-              controller.jsonOutput,
+              ctrl.jsonOutput,
               builder: (context, json) {
                 return _JsonOutputCard(json: json);
               },

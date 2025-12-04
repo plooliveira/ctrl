@@ -28,7 +28,7 @@ class TodosView extends ViewWidget<TodosController> {
   // source (ObjectBox) is shared and reactive — multiple ViewModel instances will
   // still observe the same data changes.
   @override
-  TodosController resolveController(BuildContext context) =>
+  TodosController resolveCtrl(BuildContext context) =>
       GetIt.I<TodosController>();
 
   @override

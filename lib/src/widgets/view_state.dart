@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Base state for MVC views.
 ///
 /// [ViewState] manages the lifecycle connection between a [StatefulWidget] and
-/// its [Controller]. It automatically:
+/// its [Ctrl]. It automatically:
 /// * Sets the Controller as active/inactive based on widget lifecycle
 /// * Responds to app lifecycle changes (background/foreground)
 /// * Disposes the Controller when the widget is disposed
@@ -31,35 +31,34 @@ import 'package:flutter/material.dart';
 /// ```
 ///
 /// See also:
-/// * [Controller], which provides onActive/onInactive callbacks
-abstract class ViewState<T extends Controller, W extends StatefulWidget>
+/// * [Ctrl], which provides onActive/onInactive callbacks
+abstract class ViewState<T extends Ctrl, W extends StatefulWidget>
     extends _BaseState<W> {
   /// Creates the Controller instance to be used by this ViewState.
   /// By default, it retrieves the Controller from the service locator.
   /// Override this method to provide a custom Controller instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
   @protected
-  T resolveController() => Locator().get();
+  T resolveCtrl() => Locator().get();
 
   /// The Controller instance associated with this ViewState.
-  late final T controller = resolveController();
-  bool _isUpdateScheduled = false;
+  late final T ctrl = resolveCtrl();
 
   @override
   void initState() {
     super.initState();
-    controller.isActive = true;
+    ctrl.isActive = true;
   }
 
   @override
   void dispose() {
-    _disposeController();
+    _disposeCtrl();
     super.dispose();
   }
 
-  void _disposeController() {
-    controller.dispose();
+  void _disposeCtrl() {
+    ctrl.dispose();
     debugLog(
-      'Disposed Controller: ${controller.runtimeType}, from View: ${widget.runtimeType}',
+      'Disposed Controller: ${ctrl.runtimeType}, from View: ${widget.runtimeType}',
     );
   }
 
@@ -70,12 +69,12 @@ abstract class ViewState<T extends Controller, W extends StatefulWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        controller.isActive = true;
+        ctrl.isActive = true;
         break;
       case AppLifecycleState.inactive:
       case AppLifecycleState.hidden:
       case AppLifecycleState.paused:
-        controller.isActive = false;
+        ctrl.isActive = false;
         break;
       default:
       // Nothing to do here

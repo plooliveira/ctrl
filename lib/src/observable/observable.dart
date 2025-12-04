@@ -17,14 +17,14 @@ bool _defaultChangeDetector<T>(T to, T from) {
   return to != from;
 }
 
-/// An observable data holder for the MVVM pattern.
+/// An observable data holder.
 ///
 /// [Observable] is the core class of the mvvm_kit package. It holds a value
 /// and notifies observers when that value changes. Use it with [Watch] or
 /// [GroupWatch] widgets to automatically rebuild UI when data changes.
 ///
 /// This is an abstract class. Use [MutableObservable] for data you can modify,
-/// or create instances using factory methods like [Observable.fromValueNotifier]
+/// or create instances using factory methods like [MutableObservable.fromValueNotifier]
 /// and [Observable.fromStream].
 ///
 /// Example:
@@ -220,7 +220,7 @@ abstract class Observable<T> extends ChangeNotifier {
   /// this Observable from its [parentScope]. After calling dispose, this
   /// Observable should not be used anymore.
   ///
-  /// The [Controller] automatically disposes all Observable instances
+  /// The [Ctrl] automatically disposes all Observable instances
   /// registered in its scope, so manual disposal is usually not needed.
   @override
   void dispose() {
@@ -259,7 +259,7 @@ abstract class Observable<T> extends ChangeNotifier {
 ///
 /// See also:
 /// * [Observable], the immutable base class
-/// * [Controller.mutable], for creating MutableObservable in a Controller scope
+/// * [Ctrl.mutable], for creating MutableObservable in a Controller scope
 class MutableObservable<T> extends Observable<T> {
   T _value;
 

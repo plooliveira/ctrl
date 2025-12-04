@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 class MockCounterViewModel extends Mock implements CounterViewModel {}
 
 // ViewModel de teste real
-class CounterViewModel extends Controller {
+class CounterViewModel with Ctrl {
   late final counter = mutable(0);
 
   void increment() => counter.value++;
@@ -24,7 +24,7 @@ class TrackableCounterViewModel extends CounterViewModel {
 }
 
 // ViewModel para rastrear notificações
-class TrackingViewModel extends Controller {
+class TrackingViewModel with Ctrl {
   late final counter = mutable(0);
 }
 
@@ -62,10 +62,10 @@ class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
         body: Column(
           children: [
             Watch(
-              controller.counter,
+              ctrl.counter,
               builder: (context, value) => Text('Counter: $value'),
             ),
-            Text('ViewModel Active: ${controller.isActive}'),
+            Text('ViewModel Active: ${ctrl.isActive}'),
           ],
         ),
       ),
@@ -77,7 +77,7 @@ class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
 class MockLiveData<T> extends Mock implements Observable<T> {}
 
 // ViewModel para GroupWatch
-class ProfileViewModel extends Controller {
+class ProfileViewModel with Ctrl {
   late final name = mutable('John');
   late final age = mutable(30);
 }
@@ -87,7 +87,7 @@ class ProfileViewModel extends Controller {
 // ============================================
 
 // ViewModel para testes de ViewWidget
-class UserViewModel extends Controller {
+class UserViewModel with Ctrl {
   late final userId = mutable<String?>(null);
   late final userData = mutable<String>('No data');
 
@@ -109,7 +109,7 @@ class CallbackTracker {
   int onInitCallCount = 0;
   int onUpdateCallCount = 0;
   BuildContext? lastContext;
-  Controller? lastViewModel;
+  Ctrl? lastViewModel;
 
   void reset() {
     onInitCallCount = 0;
@@ -214,7 +214,7 @@ class CustomResolveViewWidget extends ViewWidget<CounterViewModel> {
   const CustomResolveViewWidget({super.key, this.customViewModel});
 
   @override
-  CounterViewModel? resolveController(BuildContext context) => customViewModel;
+  CounterViewModel? resolveCtrl(BuildContext context) => CounterViewModel();
 
   @override
   Widget build(BuildContext context, CounterViewModel viewModel) {

@@ -14,7 +14,7 @@ part '_dispose.dart';
 /// scope is disposed. It supports hierarchical scopes through parent-child
 /// relationships, ensuring proper cleanup of resources.
 ///
-/// Commonly used within [Controller] to manage all Observable instances, but
+/// Commonly used within [Ctrl] to manage all Observable instances, but
 /// can also be used standalone for managing any [ChangeNotifier] lifecycle.
 ///
 /// Example:
@@ -28,7 +28,7 @@ part '_dispose.dart';
 /// ```
 ///
 /// See also:
-/// * [Controller], which uses DataScope internally
+/// * [Ctrl], which uses DataScope internally
 /// * [Observable], the primary type managed by DataScope
 class DataScope {
   final LinkedHashSet<ChangeNotifier> _items = LinkedHashSet();

@@ -1,28 +1,28 @@
-# MVVM Kit Playground
+# Ctrl Playground
 
-This is a **demonstration playground** for the [mvvm_kit](https://pub.dev/packages/mvvm_kit) package, illustrating the practical implementation of the **MVVM (Model-View-ViewModel)** pattern combined with **LiveData** in different real-world Flutter development scenarios.
+This is a **demonstration playground** for the [ctrl](https://pub.dev/packages/ctrl) package, illustrating the practical implementation of the **MVVM (Model-View-ViewModel)** pattern combined with **Observable** in different real-world Flutter development scenarios.
 
 ## 🎯 Purpose
 
-The playground demonstrates how to implement the MVVM + LiveData pattern in various contexts, including:
+The playground demonstrates how to implement the MVVM + Observable pattern in various contexts, including:
 
-- Reactive state management with LiveData
-- Complex object manipulation with LiveData.update()
-- LiveData transformations and combinations
-- HotswapLiveData for dynamic data source switching
+- Reactive state management with Observable
+- Complex object manipulation with Observable.update()
+- Observable transformations and combinations
+- HotswapObservable for dynamic data source switching
 - Data layer integration using Repository Pattern
 - Reactive Local database integration
 
 ## 📋 Included Examples
 
 ### 1. Counter
-Basic demonstration of LiveData and loading states, ideal for understanding the pattern's fundamentals.
+Basic demonstration of Observable and loading states, ideal for understanding the pattern's fundamentals.
 
 ### 2. Theme Switcher
-Demonstrates HotswapLiveData for dynamically switching between different LiveData sources at runtime.
+Demonstrates HotswapObservable for dynamically switching between different Observable sources at runtime.
 
 ### 3. Product Form
-Demonstration of complex Objects manipulation using `LiveData.update()` for granular state updates.
+Demonstration of complex Objects manipulation using `Observable.update()` for granular state updates.
 
 ### 4. Todo List
 Complete example with Repository Pattern, demonstrating reactive integration with local database and CRUD operations.
@@ -42,7 +42,7 @@ lib/
 
 ## 🚀 How to Run
 
-1. Clone the mvvm_kit repository
+1. Clone the ctrl repository
 2. Navigate to the example folder:
    ```bash
    cd example
@@ -61,7 +61,7 @@ lib/
 Each example in the playground is independent and self-contained, allowing you to:
 
 - Explore the source code of each feature
-- Understand how to integrate mvvm_kit in different scenarios
+- Understand how to integrate Ctrl in different scenarios
 - See code organization best practices
 - Learn scalable architecture patterns
 

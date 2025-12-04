@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:ctrl/ctrl.dart';
 
 /// A [ViewWidget] is a simplified version of a [StatefulWidget] + [ViewState].
-/// It is a generic class that takes a [Controller] as a type parameter.
-/// By default, it uses the built-in service locator to resolve the [Controller].
-/// You can register your [Controller] in the service locator before running the app:
+/// It is a generic class that takes a [Ctrl] as a type parameter.
+/// By default, it uses the built-in service locator to resolve the [Ctrl].
+/// You can register your [Ctrl] in the service locator before running the app:
 ///
 /// ```dart
 /// void setupLocator() {
@@ -13,7 +13,7 @@ import 'package:ctrl/ctrl.dart';
 /// }
 /// ```
 ///
-/// You can override the [resolveController] method to inject a [Controller].
+/// You can override the [resolveCtrl] method to inject a [Ctrl].
 /// This is useful for testing.
 ///
 /// ### Cascade State Composition (CSC)
@@ -45,13 +45,13 @@ import 'package:ctrl/ctrl.dart';
 ///             ├─ Own State: GrandChildController
 ///             └─ Receives from parent: childData
 /// ```
-abstract class ViewWidget<T extends Controller> extends StatefulWidget {
+abstract class ViewWidget<T extends Ctrl> extends StatefulWidget {
   const ViewWidget({super.key});
 
-  /// Override this method to provide a custom [Controller] instance.
-  /// By default, it retrieves the [Controller] from the service locator.
-  /// Override this method to provide a custom [Controller] instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
-  T? resolveController(BuildContext context) => null;
+  /// Override this method to provide a custom [Ctrl] instance.
+  /// By default, it retrieves the [Ctrl] from the service locator.
+  /// Override this method to provide a custom [Ctrl] instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
+  T? resolveCtrl(BuildContext context) => null;
 
   /// Override this method to provide a [Widget] to be built.
   /// ```dart
@@ -96,27 +96,27 @@ abstract class ViewWidget<T extends Controller> extends StatefulWidget {
       _ViewWidgetAdapter<T, ViewWidget<T>>();
 }
 
-class _ViewWidgetAdapter<V extends Controller, W extends ViewWidget<V>>
+class _ViewWidgetAdapter<V extends Ctrl, W extends ViewWidget<V>>
     extends ViewState<V, W> {
   @override
-  V resolveController() {
-    return widget.resolveController(context) ?? super.resolveController();
+  V resolveCtrl() {
+    return widget.resolveCtrl(context) ?? super.resolveCtrl();
   }
 
   @override
   void initState() {
     super.initState();
-    widget.onInit(context, controller);
+    widget.onInit(context, ctrl);
   }
 
   @override
   void didUpdateWidget(covariant W oldWidget) {
-    widget.onUpdate(context, controller);
+    widget.onUpdate(context, ctrl);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.build(context, controller);
+    return widget.build(context, ctrl);
   }
 }

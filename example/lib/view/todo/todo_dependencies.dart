@@ -17,6 +17,6 @@ class TodosDependencies extends AppDependencies {
       () => ObjectBoxTodoRepository(GetIt.I<Store>()),
     );
     GetIt.I.registerFactory(() => TodosController(GetIt.I<TodoRepository>()));
-    GetIt.I.registerFactory(() => AddTodoViewModel(GetIt.I<TodoRepository>()));
+    GetIt.I.registerFactory(() => AddTodoController(GetIt.I<TodoRepository>()));
   }
 }

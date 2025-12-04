@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ctrl/ctrl.dart';
 
 // Test implementation of ViewModel
-class TestViewModel extends Controller {
+class TestViewModel with Ctrl {
   int onActiveCallCount = 0;
   int onInactiveCallCount = 0;
 

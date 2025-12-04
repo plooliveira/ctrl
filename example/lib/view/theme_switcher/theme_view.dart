@@ -29,7 +29,7 @@ class ThemeView extends ViewWidget<ThemeController> {
   // Override resolveController() to plug a
   // different injection strategy. In this case, Provider.
   @override
-  ThemeController resolveController(BuildContext context) =>
+  ThemeController resolveCtrl(BuildContext context) =>
       context.read<ThemeController>();
 
   @override

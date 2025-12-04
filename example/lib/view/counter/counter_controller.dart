@@ -1,6 +1,6 @@
 import 'package:ctrl/ctrl.dart';
 
-class CounterController extends Controller {
+class CounterController with Ctrl {
   // Observable created with mutable() is auto-disposed by the Controller's scope
   late final _counter = mutable(0);
   Observable<int> get counter => _counter;

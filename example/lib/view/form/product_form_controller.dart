@@ -5,7 +5,7 @@ import 'package:ctrl/ctrl.dart';
 // In this Controller, we manage a simple product form with fields for name, price, and availability.
 // The Observable hold the product data and .update method updates each field individually.
 
-class ProductFormController extends Controller {
+class ProductFormController with Ctrl {
   late final _product = mutable(
     ProductModel(name: '', price: 0.0, available: false),
   );

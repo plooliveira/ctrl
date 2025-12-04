@@ -1,10 +1,10 @@
 import 'package:ctrl/ctrl.dart';
 import '../../../data/repositories/todo_repository.dart';
 
-class AddTodoViewModel extends Controller {
+class AddTodoController with Ctrl {
   late final TodoRepository _repository;
 
-  AddTodoViewModel(TodoRepository repository) : _repository = repository;
+  AddTodoController(TodoRepository repository) : _repository = repository;
 
   void addTodo(String title) {
     if (title.trim().isEmpty) return;

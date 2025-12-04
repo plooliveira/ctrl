@@ -3,7 +3,7 @@ import 'package:ctrl/ctrl.dart';
 
 enum TodosFilter { all, active, completed }
 
-class TodosController extends Controller {
+class TodosController with Ctrl {
   late final TodoRepository _repository;
 
   TodosController(TodoRepository repo) : _repository = repo;

@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:ctrl/ctrl.dart';
+import 'package:example_playground/data/repositories/repository_data.dart';
 import 'package:objectbox/objectbox.dart';
 import '../models/todo_item.dart';
 
 abstract class TodoRepository {
-  LiveRepositoryData<List<TodoItem>> get todos;
+  RepositoryData<List<TodoItem>> get todos;
 
   void add(String title);
   void toggle(int id);
@@ -26,8 +26,8 @@ class ObjectBoxTodoRepository implements TodoRepository {
   }
 
   @override
-  LiveRepositoryData<List<TodoItem>> get todos =>
-      LiveRepositoryData(_todosData.source);
+  RepositoryData<List<TodoItem>> get todos =>
+      RepositoryDataImpl(_todosData.source);
 
   void _listenToDatabase() {
     final query = _box.query();
