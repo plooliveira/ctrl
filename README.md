@@ -1,8 +1,14 @@
-# Ctrl
+ <br/>
+  <br/>
+  <p align="center">
+    <img src="ctrl_logo.png" alt="ctrl logo" width="500">
+  </p>
+
+<br/>
 
 Ctrl is a package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
 
-It provides a simple way to manage state in your Flutter applications.
+It provides a simple way to manage state in your Flutter applications using Flutter's built-in ChangeNotifier.
 
 ## Features
 
