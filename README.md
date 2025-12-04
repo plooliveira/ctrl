@@ -17,7 +17,7 @@ It provides a simple way to manage state in your Flutter applications using Flut
 
 ## Deep Dive: Observable
 
-`Observable` is the core of this package. It is an enhanced version of Flutter's `ChangeNotifier` that provides more power and flexibility.
+`Observable` is the core of this package. It is an enhanced implementation of Flutter's `ChangeNotifier` that provides more power and flexibility.
 
 Unlike a standard `ChangeNotifier`, an `Observable`:
 -   Holds a value and by default notifies listeners only when the value changes(You can use emitAll to notify listeners even if the value hasn't changed).
