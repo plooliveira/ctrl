@@ -98,6 +98,8 @@ You can use `ViewWidget` or `ViewState` to connect your Ctrl class to the widget
 
 You can access your 'Ctrl class' using the `ctrl` property. This property is an accessor that points to the instance of your Ctrl class.
 
+* Cascade State Composition allows widgets to maintain an isolated state (ctrl classes) while receiving data from parents via constructor injection. This creates a predictable, unidirectional data flow where children react to parent changes but manage their own local state independently. Is like use didUpdateWidget to update the state of the widget when some properties change but simpler. See `example/lib/view/counter` for a demo.
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
