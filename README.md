@@ -136,12 +136,12 @@ class _CounterPageState extends ViewState<CounterController, CounterPage> {
       appBar: AppBar(title: const Text('Counter')),
       body: Center(
         child: Watch(
-          controller.count,
+          ctrl.count,
           builder: (context, value) => Text('Count: $value'),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.increment,
+        onPressed: ctrl.increment,
         child: const Icon(Icons.add),
       ),
     );
@@ -166,7 +166,6 @@ You can also override `resolveCtrl` in your `ViewWidget` or `ViewState` to use a
 
 ```dart
 @override
-CounterController resolveCtrl(BuildContext context) {
-  return GetIt.I.get<CounterController>();
-}
+CounterController resolveCtrl(BuildContext context) => GetIt.I.get<CounterController>();
+
 ```
