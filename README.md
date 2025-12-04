@@ -28,6 +28,7 @@ Unlike a standard `ChangeNotifier`, an `Observable`:
 
 The package comes with a set of useful extensions to manipulate your data, like:
 
+-   **update**: Updates complex observable objects.
 -   **transform**: Creates a new observable that is derived from the original one. It updates automatically when the source changes.
 -   **mirror**: Creates a read-only view of a mutable observable.
 -   **hotswappable**: Allows you to dynamically switch the underlying source of the observable.
@@ -67,6 +68,22 @@ class CounterController with Ctrl {
 
   void increment() {
     count.value++;
+  }
+}
+```
+
+You can also hide the mutable and expose only the observable:
+
+```dart
+import 'package:ctrl/ctrl.dart';
+
+class CounterController with Ctrl {
+  // Create a mutable observable
+  late final _count = mutable(0);
+  Observable<int> get count => _count;
+
+  void increment() {
+    _count.value++;
   }
 }
 ```
@@ -153,6 +170,31 @@ class _CounterPageState extends ViewState<CounterController, CounterPage> {
 }
 ```
 
+### Update complex objects
+
+```dart
+import 'package:ctrl/ctrl.dart';
+
+class Product {
+  final int id;
+  final String name;
+  final double price;
+
+  Product({required this.id, required this.name, required this.price});
+}
+
+class CounterController with Ctrl {
+  // Create a mutable observable
+  late final product = mutable(Product(id: 1, name: 'Product 1', price: 10.0));
+
+  void updateProductPrice() {
+    product.update((product) {
+      product.price = 20.0;
+    });
+  }
+}
+```
+
 ### Dependency Injection
 
 By default, `Ctrl` uses a simple built-in service locator. You can register your controllers before using them.
@@ -160,13 +202,17 @@ By default, `Ctrl` uses a simple built-in service locator. You can register your
 ```dart
 void main() {
   // Register the controller factory
-  Locator().registerFactory(() => CounterController());
-  
+  // i() is a shortcut for Locator().get(). It helps inject dependencies into the constructor.
+  Locator().registerFactory((i) => CounterController(repository: i())); 
+
+  // You can also register other dependencies
+  Locator().registerSingleton((_) => CounterRepository());
+
   runApp(const MyApp());
 }
 ```
 
-You can also override `resolveCtrl` in your `ViewWidget` or `ViewState` to use any other dependency injection solution (like GetIt, Provider, etc.).
+You can override `resolveCtrl` in your `ViewWidget` or `ViewState` to use any other dependency injection solution (like GetIt, Provider, etc.).
 
 ```dart
 @override
