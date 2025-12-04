@@ -1,7 +1,7 @@
 
   <br/>
   <p align="center">
-    <img src="ctrl_logo.png" alt="ctrl logo" width="500">
+    <img src="ctrl_logo.png" alt="ctrl logo" width="400">
   </p>
 
 Ctrl is a package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
