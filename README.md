@@ -2,7 +2,7 @@
 
 Ctrl is a package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
 
-It provides a simple way to manage state in your Flutter applications without enforcing a specific architectural pattern. You can use it with MVVM, MVC, MVP, or any other structure you prefer.
+It provides a simple way to manage state in your Flutter applications.
 
 ## Features
 
