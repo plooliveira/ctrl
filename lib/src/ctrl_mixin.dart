@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../ctrl.dart';
 
-/// Base class for Controllers in the MVC pattern.
+/// Mixin for creating Ctrl classes (Controllers, ViewModels, Stores, etc.).
 ///
-/// [Ctrl] manages the business logic for the UI layer.
+/// [Ctrl] manages the state and UI logic.
 /// It provides lifecycle management, automatic
 /// disposal of [Observable] and other [ChangeNotifier] objects through [DataScope], and built-in loading state management.
 ///
@@ -17,7 +17,7 @@ import '../ctrl.dart';
 ///
 /// Example:
 /// ```dart
-/// class CounterController extends Controller {
+/// class CounterController with Ctrl {
 ///   final _counter = mutable(0);
 ///   Observable<int> get counter => _counter;
 ///
@@ -33,7 +33,7 @@ import '../ctrl.dart';
 /// ```
 ///
 /// See also:
-/// * [ViewState], for connecting Controllers to widgets
+/// * [ViewState], for connecting Ctrl classes to widgets
 /// * [Observable] and [MutableObservable], for observable data
 /// * [DataScope], for managing Observable lifecycle
 mixin Ctrl {
@@ -86,12 +86,12 @@ mixin Ctrl {
   /// Scope for managing the lifecycle of [Observable] instances.
   ///
   /// All Observable created with [mutable] or [register] are automatically
-  /// added to this scope and disposed when the Controller is disposed.
+  /// added to this scope and disposed when the Ctrl class is disposed.
   final DataScope scope = DataScope();
 
   bool _isActive = false;
 
-  /// Whether this Controller is currently active.
+  /// Whether this Ctrl class is currently active.
   ///
   /// Set to `true` when the associated view becomes active (visible),
   /// and `false` when it becomes inactive. This is managed automatically
@@ -113,25 +113,25 @@ mixin Ctrl {
 
   Completer _isActiveCompleter = Completer();
 
-  /// Creates a [MutableObservable] and registers it in the Controller's scope.
+  /// Creates a [MutableObservable] and registers it in the Ctrl class scope.
   ///
-  /// The created Observable will be automatically disposed when the Controller
+  /// The created Observable will be automatically disposed when the Ctrl class
   /// is disposed. This is the recommended way to create observable state
-  /// in your Controller.
+  /// in your Ctrl class.
   ///
   /// Example:
   /// ```dart
-  /// class MyController extends Controller {
+  /// class MyController with Ctrl {
   ///   final _name = mutable('John');
   ///   Observable<String> get name => _name;
   /// }
   /// ```
   MutableObservable<T> mutable<T>(T value) => scope.mutable(value);
 
-  /// Registers an existing [Observable] in the Controller's scope.
+  /// Registers an existing [Observable] in the Ctrl class scope.
   ///
   /// The registered Observable will be automatically disposed when the
-  /// Controller is disposed. Use this when you create Observable instances
+  /// Ctrl class is disposed. Use this when you create Observable instances
   /// that aren't created with [mutable].
   ///
   /// Example:
@@ -172,7 +172,7 @@ mixin Ctrl {
     scope.dispose();
   }
 
-  /// Waits until the Controller becomes active.
+  /// Waits until the Ctrl class becomes active.
   ///
   /// This is useful for operations that should only execute when the
   /// view is visible. The Future completes immediately if already active.

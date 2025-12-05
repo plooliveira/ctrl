@@ -8,7 +8,7 @@ import 'core/routes/app_router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Register ViewModels using the built-in service locator
+  // Register Controllers using the built-in service locator
   Locator().registerFactory((_) => CounterController());
   Locator().registerFactory((_) => ProductFormController());
 
