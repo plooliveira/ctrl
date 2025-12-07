@@ -47,12 +47,10 @@ bool _defaultChangeDetector<T>(T to, T from) {
 /// * [MutableObservable], for creating mutable observable data
 /// * [Watch], for observing a single Observable in widgets
 /// * [GroupWatch], for observing multiple Observable objects
-abstract class Observable<T> with ChangeNotifier {
+abstract class Observable<T> extends ChangeNotifier {
   bool _isDisposed = false;
-  bool get isDisposed => _isDisposed;
 
-  bool _isExecuting = false;
-  bool get isExecuting => _isExecuting;
+  bool get isDisposed => _isDisposed;
 
   final List<Function(T)> _subscribers = [];
 
@@ -209,6 +207,7 @@ abstract class Observable<T> with ChangeNotifier {
   @override
   void notifyListeners() {
     super.notifyListeners();
+
     final value = this.value;
     for (var callback in _subscribers.toList()) {
       callback(value);
@@ -226,7 +225,6 @@ abstract class Observable<T> with ChangeNotifier {
   @override
   void dispose() {
     _isDisposed = true;
-    _isExecuting = false;
     _subscribers.clear();
     scope?.dispose();
     parentScope?.remove(this);
@@ -341,16 +339,5 @@ class MutableObservable<T> extends Observable<T> {
   void update(Function(T value) block) {
     block(_value);
     notifyListeners();
-  }
-
-  void asyncUpdate(Future<void> Function(T value) block) async {
-    _isExecuting = true;
-    notifyListeners();
-    try {
-      await block(_value);
-    } finally {
-      _isExecuting = false;
-      notifyListeners();
-    }
   }
 }
