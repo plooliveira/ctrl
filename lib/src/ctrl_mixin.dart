@@ -56,31 +56,6 @@ mixin Ctrl {
   /// Sets [isLoading] to `false`.
   void completeLoading() => _isLoading.value = false;
 
-  /// Executes an asynchronous action while managing the loading state.
-  ///
-  /// Sets [isLoading] to `true` before starting the action,
-  /// and sets it back to `false` when the action completes, whether
-  /// it completes successfully or with an error.
-  ///
-  /// Example:
-  /// ```dart
-  /// Future<void> fetchData() async {
-  ///   await executeAsync(() async {
-  ///     await repository.getData();
-  ///   });
-  /// }
-  /// ```
-  Future<T> executeAsync<T>(Future<T> Function() action) async {
-    beginLoading();
-    try {
-      return await action();
-    } catch (e) {
-      rethrow;
-    } finally {
-      completeLoading();
-    }
-  }
-
   // Lifecycle methods
 
   /// Scope for managing the lifecycle of [Observable] instances.
@@ -138,7 +113,14 @@ mixin Ctrl {
   /// ```dart
   /// final custom = register(CustomObservable());
   /// ```
-  T register<T extends Observable>(T value) => scope.add(value);
+  T register<T extends Observable>(T observer) {
+    observer.subscribe((value) {
+      if (observer.isExecuting != isLoading.value) {
+        _isLoading.value = observer.isExecuting;
+      }
+    });
+    return scope.add(observer);
+  }
 
   /// Called when the associated view becomes active (visible).
   ///
