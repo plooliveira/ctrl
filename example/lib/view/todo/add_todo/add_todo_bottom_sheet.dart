@@ -15,7 +15,7 @@ class AddTodoBottomSheet extends StatefulWidget {
 }
 
 class _AddTodoBottomSheetState
-    extends ViewState<AddTodoViewModel, AddTodoBottomSheet> {
+    extends CtrlState<AddTodoViewModel, AddTodoBottomSheet> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 

@@ -18,7 +18,7 @@ class TodosRoute extends GoRoute {
       );
 }
 
-class TodosView extends ViewWidget<TodosViewModel> {
+class TodosView extends StatefulWidget with CtrlWidget<TodosViewModel> {
   const TodosView({super.key});
 
   // Override resolveController() to plug a

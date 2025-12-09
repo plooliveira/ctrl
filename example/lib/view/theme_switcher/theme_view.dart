@@ -23,7 +23,7 @@ class ThemeRoute extends GoRoute {
       );
 }
 
-class ThemeView extends ViewWidget<ThemeController> {
+class ThemeView extends StatefulWidget with CtrlWidget<ThemeController> {
   const ThemeView({super.key});
 
   // Override resolveController() to plug a

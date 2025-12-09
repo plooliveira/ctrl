@@ -31,7 +31,7 @@ class TrackingView extends StatefulWidget {
   State<TrackingView> createState() => TrackingViewState();
 }
 
-class TrackingViewState extends ViewState<TrackingViewModel, TrackingView> {
+class TrackingViewState extends CtrlState<TrackingViewModel, TrackingView> {
   int buildCount = 0;
 
   @override
@@ -49,7 +49,7 @@ class CounterView extends StatefulWidget {
   State<CounterView> createState() => _CounterViewState();
 }
 
-class _CounterViewState extends ViewState<CounterViewModel, CounterView> {
+class _CounterViewState extends CtrlState<CounterViewModel, CounterView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,7 +106,7 @@ class CallbackTracker {
   }
 }
 
-class TestViewWidget extends ViewWidget<CounterViewModel> {
+class TestViewWidget extends StatefulWidget with CtrlWidget<CounterViewModel> {
   final CallbackTracker? tracker;
 
   const TestViewWidget({super.key, this.tracker});
@@ -143,7 +143,8 @@ class TestViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-class SimpleTestViewWidget extends ViewWidget<CounterViewModel> {
+class SimpleTestViewWidget extends StatefulWidget
+    with CtrlWidget<CounterViewModel> {
   const SimpleTestViewWidget({super.key});
 
   @override
@@ -155,7 +156,7 @@ class SimpleTestViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-class UserProfileWidget extends ViewWidget<UserViewModel> {
+class UserProfileWidget extends StatefulWidget with CtrlWidget<UserViewModel> {
   final String userId;
   final CallbackTracker? tracker;
 
@@ -191,7 +192,8 @@ class UserProfileWidget extends ViewWidget<UserViewModel> {
   }
 }
 
-class CustomResolveViewWidget extends ViewWidget<CounterViewModel> {
+class CustomResolveViewWidget extends StatefulWidget
+    with CtrlWidget<CounterViewModel> {
   final CounterViewModel? customViewModel;
 
   const CustomResolveViewWidget({super.key, this.customViewModel});
@@ -212,7 +214,8 @@ class CustomResolveViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-class ParentViewWidget extends ViewWidget<CounterViewModel> {
+class ParentViewWidget extends StatefulWidget
+    with CtrlWidget<CounterViewModel> {
   final int sharedValue;
 
   const ParentViewWidget({super.key, required this.sharedValue});
@@ -232,7 +235,7 @@ class ParentViewWidget extends ViewWidget<CounterViewModel> {
   }
 }
 
-class ChildViewWidget extends ViewWidget<CounterViewModel> {
+class ChildViewWidget extends StatefulWidget with CtrlWidget<CounterViewModel> {
   final int parentValue;
 
   const ChildViewWidget({super.key, required this.parentValue});

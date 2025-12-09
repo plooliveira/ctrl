@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ctrl/ctrl.dart';
 
-/// A [ViewWidget] is a simplified version of a [StatefulWidget] + [ViewState].
+/// A [CtrlWidget] is a simplified version of a [StatefulWidget] + [ViewState].
 /// It is a generic class that takes a [Ctrl] as a type parameter.
 /// By default, it uses the built-in service locator to resolve the [Ctrl].
 /// You can register your [Ctrl] in the service locator before running the app:
@@ -45,9 +45,7 @@ import 'package:ctrl/ctrl.dart';
 ///             ├─ Own State: GrandChildController
 ///             └─ Receives from parent: childData
 /// ```
-abstract class ViewWidget<T extends Ctrl> extends StatefulWidget {
-  const ViewWidget({super.key});
-
+mixin CtrlWidget<T extends Ctrl> on StatefulWidget {
   /// Override this method to provide a custom [Ctrl] instance.
   /// By default, it retrieves the [Ctrl] from the service locator.
   /// Override this method to provide a custom [Ctrl] instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
@@ -92,12 +90,11 @@ abstract class ViewWidget<T extends Ctrl> extends StatefulWidget {
   @protected
   @nonVirtual
   @override
-  ViewState<T, ViewWidget<T>> createState() =>
-      _ViewWidgetAdapter<T, ViewWidget<T>>();
+  State createState() => _ViewWidgetAdapter<T, CtrlWidget<T>>();
 }
 
-class _ViewWidgetAdapter<V extends Ctrl, W extends ViewWidget<V>>
-    extends ViewState<V, W> {
+class _ViewWidgetAdapter<V extends Ctrl, W extends CtrlWidget<V>>
+    extends CtrlState<V, W> {
   @override
   V resolveCtrl() {
     return widget.resolveCtrl(context) ?? super.resolveCtrl();

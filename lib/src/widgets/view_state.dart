@@ -32,7 +32,7 @@ import 'package:flutter/material.dart';
 ///
 /// See also:
 /// * [Ctrl], which provides onActive/onInactive callbacks
-abstract class ViewState<T extends Ctrl, W extends StatefulWidget>
+abstract class CtrlState<T extends Ctrl, W extends StatefulWidget>
     extends _BaseState<W> {
   /// Creates the Controller instance to be used by this ViewState.
   /// By default, it retrieves the Controller from the service locator.

@@ -25,7 +25,7 @@ class ProductFormView extends StatefulWidget {
 }
 
 class _ProductFormViewState
-    extends ViewState<ProductFormController, ProductFormView> {
+    extends CtrlState<ProductFormController, ProductFormView> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
 
