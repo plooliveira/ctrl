@@ -12,7 +12,7 @@ class CounterCascadeRoute extends GoRoute {
       );
 }
 
-class ParentCounter extends StatefulWidget with CtrlWidget<CounterController> {
+class ParentCounter extends CtrlWidget<CounterController> {
   const ParentCounter({super.key});
 
   @override
@@ -35,7 +35,7 @@ class ParentCounter extends StatefulWidget with CtrlWidget<CounterController> {
   }
 }
 
-class ChildCounter extends StatefulWidget with CtrlWidget<CounterController> {
+class ChildCounter extends CtrlWidget<CounterController> {
   const ChildCounter({super.key, required this.parentCounter});
   final int parentCounter;
 

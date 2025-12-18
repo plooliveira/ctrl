@@ -22,7 +22,12 @@ import '../observable/observable.dart';
 /// * [GroupWatch], for observing multiple LiveData objects
 /// * [Observable], the observable data holder
 class Watch<T> extends StatefulWidget {
-  const Watch(this.notifier, {required this.builder, super.key});
+  const Watch(
+    this.notifier, {
+    required this.builder,
+    this.disposeNotifier,
+    super.key,
+  });
 
   /// The [Observable] to observe.
   final Observable<T> notifier;
@@ -31,6 +36,8 @@ class Watch<T> extends StatefulWidget {
   ///
   /// Called initially and whenever the [notifier] value changes.
   final Widget Function(BuildContext, T) builder;
+
+  final VoidCallback? disposeNotifier;
 
   @override
   State createState() => _WatchState<T>();
@@ -43,6 +50,12 @@ class _WatchState<T> extends State<Watch<T>> with WatchMixin {
   @override
   Widget build(BuildContext context) =>
       widget.builder(context, widget.notifier.value);
+
+  @override
+  void dispose() {
+    widget.disposeNotifier?.call();
+    super.dispose();
+  }
 }
 
 /// Widget that rebuilds when any of multiple [Observable] values change.

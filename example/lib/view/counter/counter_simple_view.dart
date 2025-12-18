@@ -12,7 +12,7 @@ class CounterRoute extends GoRoute {
       );
 }
 
-class CounterView extends StatefulWidget with CtrlWidget<CounterController> {
+class CounterView extends CtrlWidget<CounterController> {
   const CounterView({super.key});
 
   @override

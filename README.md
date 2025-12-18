@@ -90,21 +90,29 @@ class CounterController with Ctrl {
 
 ### 2. Connect to a Widget
 
-You can use `ViewWidget` or `ViewState` to connect your Ctrl class to the widget lifecycle.
+You can use `CtrlWidget` or `CtrlState` to connect your Ctrl class to the widget lifecycle.
 
-#### Using ViewWidget
+#### Choosing Between CtrlWidget and CtrlState
 
-`ViewWidget` is perfect for simple widgets. It handles the creation and disposal of the Ctrl class for you.
+- **Use `CtrlWidget`** for simple widgets that need exactly **one controller**
+- **Use `CtrlState`** when you need:
+  - **Multiple controllers** in the same widget
+  - Full access to the **State lifecycle** (didUpdateWidget, didChangeDependencies, etc.)
+  - Complex logic with **animations**, **text controllers**, or other **mixins**
 
-You can access your 'Ctrl class' using the `ctrl` property. This property is an accessor that points to the instance of your Ctrl class.
+#### Using CtrlWidget
 
-* Cascade State Composition allows widgets to maintain an isolated state (ctrl classes) while receiving data from parents via constructor injection. This creates a predictable, unidirectional data flow where children react to parent changes but manage their own local state independently. Is like use didUpdateWidget to update the state of the widget when some properties change but simpler. See `example/lib/view/counter` for a demo.
+`CtrlWidget` is perfect for simple widgets with a single controller. It handles the creation and disposal of the Ctrl class for you.
+
+The controller is passed as a parameter to the `build` method, making it easy to access.
+
+**Cascade State Composition:** Each widget maintains its own isolated state (controller) while receiving data from parents via constructor injection. This creates a predictable, unidirectional data flow where children react to parent changes but manage their own local state independently. See `example/lib/view/counter` for a demo.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:ctrl/ctrl.dart';
 
-class CounterPage extends ViewWidget<CounterController> {
+class CounterPage extends CtrlWidget<CounterController> {
   const CounterPage({super.key});
 
   @override
@@ -137,9 +145,13 @@ class CounterPage extends ViewWidget<CounterController> {
 }
 ```
 
-#### Using ViewState
+#### Using CtrlState
 
-For more complex scenarios where you need full access to the `State` lifecycle, use `ViewState`.
+For more complex scenarios where you need full access to the `State` lifecycle or **multiple controllers**, use `CtrlState`.
+
+Use the `useCtrl<T>()` method to register controllers. All registered controllers will have their lifecycle managed automatically.
+
+##### Single Controller Example
 
 ```dart
 import 'package:flutter/material.dart';
@@ -152,7 +164,9 @@ class CounterPage extends StatefulWidget {
   State<CounterPage> createState() => _CounterPageState();
 }
 
-class _CounterPageState extends ViewState<CounterController, CounterPage> {
+class _CounterPageState extends CtrlState<CounterPage> {
+  late final ctrl = useCtrl<CounterController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,6 +180,33 @@ class _CounterPageState extends ViewState<CounterController, CounterPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: ctrl.increment,
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+##### Multiple Controllers Example
+
+```dart
+class _DashboardPageState extends CtrlState<DashboardPage> {
+  // Register multiple controllers
+  late final authCtrl = useCtrl<AuthController>();
+  late final userCtrl = useCtrl<UserController>();
+  late final notificationCtrl = useCtrl<NotificationController>();
+
+  // You can also pass a controller instance directly or provides using service locator or other dependency injection strategy
+  late final customCtrl = useCtrl(CustomController(someParam: 'value'));
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Watch(authCtrl.isAuthenticated, builder: (context, isAuth) => ...),
+          Watch(userCtrl.profile, builder: (context, profile) => ...),
+          Watch(notificationCtrl.count, builder: (context, count) => ...),
+        ],
       ),
     );
   }
@@ -214,10 +255,34 @@ void main() {
 }
 ```
 
-You can override `resolveCtrl` in your `ViewWidget` or `ViewState` to use any other dependency injection solution (like GetIt, Provider, etc.).
+#### Custom Dependency Injection
+
+You can override `resolveCtrl` in your `CtrlWidget` to use any other dependency injection solution (like GetIt, Provider, etc.).
 
 ```dart
-@override
-CounterController resolveCtrl(BuildContext context) => GetIt.I.get<CounterController>();
+// In CtrlWidget
+class CounterPage extends CtrlWidget<CounterController> {
+  @override
+  CounterController? resolveCtrl(BuildContext context) {
+    return GetIt.I.get<CounterController>();
+  }
 
+  @override
+  Widget build(BuildContext context, CounterController ctrl) {
+    // ...
+  }
+}
+```
+
+For `CtrlState`, you can pass the controller directly to `useCtrl()`:
+
+```dart
+class _CounterPageState extends CtrlState<CounterPage> {
+  late final ctrl = useCtrl(GetIt.I.get<CounterController>());
+
+  @override
+  Widget build(BuildContext context) {
+    // ...
+  }
+}
 ```

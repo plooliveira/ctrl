@@ -24,10 +24,17 @@ class ProductFormView extends StatefulWidget {
   State<ProductFormView> createState() => _ProductFormViewState();
 }
 
-class _ProductFormViewState
-    extends CtrlState<ProductFormController, ProductFormView> {
+class _ProductFormViewState extends CtrlState<ProductFormView> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
+
+  late final ctrl = useCtrl<ProductFormController>();
+
+  @override
+  void initState() {
+    super.initState();
+    print(ctrl.product.value);
+  }
 
   @override
   void dispose() {

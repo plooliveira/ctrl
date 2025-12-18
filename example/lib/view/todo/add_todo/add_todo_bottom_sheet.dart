@@ -14,14 +14,11 @@ class AddTodoBottomSheet extends StatefulWidget {
   State<AddTodoBottomSheet> createState() => _AddTodoBottomSheetState();
 }
 
-class _AddTodoBottomSheetState
-    extends CtrlState<AddTodoViewModel, AddTodoBottomSheet> {
+class _AddTodoBottomSheetState extends CtrlState<AddTodoBottomSheet> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
-  @override
-  AddTodoViewModel resolveCtrl() =>
-      widget.viewModel ?? GetIt.I<AddTodoViewModel>();
+  late final ctrl = useCtrl(GetIt.I<AddTodoViewModel>());
 
   @override
   void initState() {

@@ -2,8 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ctrl/ctrl.dart';
 
-/// A [CtrlWidget] is a simplified version of a [StatefulWidget] + [ViewState].
-/// It is a generic class that takes a [Ctrl] as a type parameter.
+/// A simplified widget for views that need exactly one controller.
+///
+/// [CtrlWidget] is a [StatefulWidget] that automatically manages the lifecycle
+/// of a single [Ctrl] instance. It is a generic class that takes a [Ctrl] as
+/// a type parameter.
+///
 /// By default, it uses the built-in service locator to resolve the [Ctrl].
 /// You can register your [Ctrl] in the service locator before running the app:
 ///
@@ -13,12 +17,12 @@ import 'package:ctrl/ctrl.dart';
 /// }
 /// ```
 ///
-/// You can override the [resolveCtrl] method to inject a [Ctrl].
-/// This is useful for testing.
+/// You can override the [resolveCtrl] method to inject a custom [Ctrl] instance.
+/// This is useful for testing or when using other dependency injection frameworks.
 ///
 /// ### Cascade State Composition (CSC)
 ///
-/// ViewWidget enables Cascade State Composition where each widget maintains
+/// [CtrlWidget] enables Cascade State Composition where each widget maintains
 /// its own isolated Controller while cascading state changes to children
 /// through reactive constructor injection.
 ///
@@ -45,47 +49,58 @@ import 'package:ctrl/ctrl.dart';
 ///             ├─ Own State: GrandChildController
 ///             └─ Receives from parent: childData
 /// ```
-mixin CtrlWidget<T extends Ctrl> on StatefulWidget {
+abstract class CtrlWidget<T extends Ctrl> extends StatefulWidget {
+  const CtrlWidget({super.key});
+
   /// Override this method to provide a custom [Ctrl] instance.
   /// By default, it retrieves the [Ctrl] from the service locator.
   /// Override this method to provide a custom [Ctrl] instance using a different method. e.g. GetIt, Provider, Constructor injection etc.
   T? resolveCtrl(BuildContext context) => null;
 
   /// Override this method to provide a [Widget] to be built.
+  ///
+  /// Example:
   /// ```dart
-  /// class UserProfile extends ViewWidget<UserProfileController> {
+  /// class UserProfile extends CtrlWidget<UserProfileController> {
   ///   final String userId;
-  /// @override
-  ///   void onInit(BuildContext context, UserProfileController controller) {
-  ///     controller.setUserId(userId);
+  ///   const UserProfile({super.key, required this.userId});
+  ///
+  ///   @override
+  ///   void onInit(BuildContext context, UserProfileController ctrl) {
+  ///     ctrl.setUserId(userId);
   ///   }
-  /// ...
+  ///
+  ///   @override
+  ///   Widget build(BuildContext context, UserProfileController ctrl) {
+  ///     return Text('User: $userId');
+  ///   }
   /// }
   /// ```
-  Widget build(BuildContext context, T controller);
+  Widget build(BuildContext context, T ctrl);
 
   /// Override this method to provide a custom [onInit] callback.
-  void onInit(BuildContext context, T controller) {}
+  void onInit(BuildContext context, T ctrl) {}
 
   /// Override this method to react to widget updates.
   ///
   /// Called whenever the widget configuration changes. Use this to pass
-  /// updated props to the ViewModel. The ViewModel should contain the logic
+  /// updated props to the controller. The controller should contain the logic
   /// to determine if any action is needed.
   ///
   /// Example:
   /// ```dart
-  /// class UserProfile extends ViewWidget<UserProfileController> {
+  /// class UserProfile extends CtrlWidget<UserProfileController> {
   ///   final String userId;
+  ///   const UserProfile({super.key, required this.userId});
   ///
   ///   @override
-  ///   void onUpdate(BuildContext context, UserProfileController controller) {
-  ///     controller.setUserId(userId); // ViewModel decides if reload is needed
+  ///   void onUpdate(BuildContext context, UserProfileController ctrl) {
+  ///     ctrl.setUserId(userId); // Controller decides if reload is needed
   ///   }
   /// ...
   /// }
   /// ```
-  void onUpdate(BuildContext context, T controller) {}
+  void onUpdate(BuildContext context, T ctrl) {}
 
   @protected
   @nonVirtual
@@ -93,27 +108,24 @@ mixin CtrlWidget<T extends Ctrl> on StatefulWidget {
   State createState() => _ViewWidgetAdapter<T, CtrlWidget<T>>();
 }
 
-class _ViewWidgetAdapter<V extends Ctrl, W extends CtrlWidget<V>>
-    extends CtrlState<V, W> {
-  @override
-  V resolveCtrl() {
-    return widget.resolveCtrl(context) ?? super.resolveCtrl();
-  }
+class _ViewWidgetAdapter<T extends Ctrl, W extends CtrlWidget<T>>
+    extends CtrlState<W> {
+  late final _ctrl = widget.resolveCtrl(context) ?? useCtrl<T>();
 
   @override
   void initState() {
     super.initState();
-    widget.onInit(context, ctrl);
+    widget.onInit(context, _ctrl);
   }
 
   @override
   void didUpdateWidget(covariant W oldWidget) {
-    widget.onUpdate(context, ctrl);
+    widget.onUpdate(context, _ctrl);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.build(context, ctrl);
+    return widget.build(context, _ctrl);
   }
 }
