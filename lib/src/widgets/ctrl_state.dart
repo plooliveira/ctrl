@@ -21,7 +21,13 @@ import 'package:flutter/material.dart';
 /// Example:
 /// ```dart
 /// class _CounterViewState extends CtrlState<CounterView> {
-///   late final ctrl = useCtrl<CounterController>();
+///   late final CounterController ctrl;
+///
+///   @override
+///   void initState() {
+///     ctrl = useCtrl<CounterController>();
+///     super.initState();
+///   }
 ///
 ///   @override
 ///   Widget build(BuildContext context) {
@@ -54,9 +60,17 @@ abstract class CtrlState<W extends StatefulWidget> extends _BaseState<W> {
   ///
   /// Example:
   /// ```dart
-  /// late final mainCtrl = useCtrl<MainController>();
-  /// late final authCtrl = useCtrl<AuthController>();
-  /// late final customCtrl = useCtrl(MyController(customParam));
+  /// late final MainController mainCtrl;
+  /// late final AuthController authCtrl;
+  /// late final MyController customCtrl;
+  ///
+  /// @override
+  /// void initState() {
+  ///   mainCtrl = useCtrl();
+  ///   authCtrl = useCtrl();
+  ///   customCtrl = useCtrl(MyController(customParam));
+  ///   super.initState();
+  /// }
   /// ```
   @protected
   S useCtrl<S extends Ctrl>([S? ctrl]) {

@@ -28,12 +28,12 @@ class _ProductFormViewState extends CtrlState<ProductFormView> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
 
-  late final ctrl = useCtrl<ProductFormController>();
+  late final ProductFormController ctrl;
 
   @override
   void initState() {
+    ctrl = useCtrl();
     super.initState();
-    print(ctrl.product.value);
   }
 
   @override

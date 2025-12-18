@@ -110,10 +110,11 @@ abstract class CtrlWidget<T extends Ctrl> extends StatefulWidget {
 
 class _ViewWidgetAdapter<T extends Ctrl, W extends CtrlWidget<T>>
     extends CtrlState<W> {
-  late final _ctrl = widget.resolveCtrl(context) ?? useCtrl<T>();
+  late final T _ctrl;
 
   @override
   void initState() {
+    _ctrl = useCtrl(widget.resolveCtrl(context));
     super.initState();
     widget.onInit(context, _ctrl);
   }

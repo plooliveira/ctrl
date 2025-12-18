@@ -50,7 +50,13 @@ class CounterView extends StatefulWidget {
 }
 
 class _CounterViewState extends CtrlState<CounterView> {
-  late final ctrl = useCtrl<CounterViewModel>();
+  late final CounterViewModel ctrl;
+
+  @override
+  void initState() {
+    ctrl = useCtrl<CounterViewModel>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

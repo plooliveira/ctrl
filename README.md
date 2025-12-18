@@ -165,7 +165,13 @@ class CounterPage extends StatefulWidget {
 }
 
 class _CounterPageState extends CtrlState<CounterPage> {
-  late final ctrl = useCtrl<CounterController>();
+  late final CounterController ctrl;
+
+  @override
+  void initState() {
+    ctrl = useCtrl();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,13 +196,22 @@ class _CounterPageState extends CtrlState<CounterPage> {
 
 ```dart
 class _DashboardPageState extends CtrlState<DashboardPage> {
-  // Register multiple controllers
-  late final authCtrl = useCtrl<AuthController>();
-  late final userCtrl = useCtrl<UserController>();
-  late final notificationCtrl = useCtrl<NotificationController>();
+  late final AuthController authCtrl;
+  late final UserController userCtrl;
+  late final NotificationController notificationCtrl;
+  late final CustomController customCtrl;
 
-  // You can also pass a controller instance directly or provides using service locator or other dependency injection strategy
-  late final customCtrl = useCtrl(CustomController(someParam: 'value'));
+  @override
+  void initState() {
+    // Register multiple controllers
+    authCtrl = useCtrl();
+    userCtrl = useCtrl();
+    notificationCtrl = useCtrl();
+
+    // You can also pass a controller instance directly or provides using service locator or other dependency injection strategy
+    customCtrl = useCtrl(CustomController(someParam: 'value'));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -263,9 +278,8 @@ You can override `resolveCtrl` in your `CtrlWidget` to use any other dependency 
 // In CtrlWidget
 class CounterPage extends CtrlWidget<CounterController> {
   @override
-  CounterController? resolveCtrl(BuildContext context) {
-    return GetIt.I.get<CounterController>();
-  }
+  CounterController? resolveCtrl(BuildContext context) => GetIt.I.get();
+ 
 
   @override
   Widget build(BuildContext context, CounterController ctrl) {
@@ -278,7 +292,13 @@ For `CtrlState`, you can pass the controller directly to `useCtrl()`:
 
 ```dart
 class _CounterPageState extends CtrlState<CounterPage> {
-  late final ctrl = useCtrl(GetIt.I.get<CounterController>());
+  late final CounterController ctrl;
+
+  @override
+  void initState() {
+    ctrl = useCtrl(GetIt.I.get());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
