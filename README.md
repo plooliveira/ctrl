@@ -208,7 +208,7 @@ class _DashboardPageState extends CtrlState<DashboardPage> {
     userCtrl = useCtrl();
     notificationCtrl = useCtrl();
 
-    // You can also pass a controller instance directly or provides using service locator or other dependency injection strategy
+    // You can also pass a controller instance directly or provide using service locator or other dependency injection strategy
     customCtrl = useCtrl(CustomController(someParam: 'value'));
     super.initState();
   }
