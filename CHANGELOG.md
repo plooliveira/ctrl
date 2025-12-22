@@ -1,3 +1,6 @@
+## 0.1.1
+ - update README.md
+ 
 ## 0.1.0
 
 **Initial Release** 🎉
