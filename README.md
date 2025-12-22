@@ -8,6 +8,9 @@ Ctrl is a package that allows you to control observables within scopes that are 
 
 It provides a simple way to manage state in your Flutter applications using Flutter's built-in ChangeNotifier.
 
+## Disclaimer
+This package is still in a very early stage of development. While it is functional, there will probably be breaking changes in future releases. So please use it with caution in production applications.
+
 ## Features
 
 -   **Observables**: Reactive data holders that notify listeners when their value changes.
