@@ -1,18 +1,20 @@
 name: ctrl
-description: A lightweight MVC pattern implementation with Observable objects and disposable scope for resource management for reactive state management.
-version: 0.2.0
+description: A package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
+version: 0.1.0
 homepage: https://github.com/plooliveira/ctrl
 repository: https://github.com/plooliveira/ctrl
 issue_tracker: https://github.com/plooliveira/ctrl/issues
 documentation: https://github.com/plooliveira/ctrl#readme
 
 topics:
-  - mvc
   - observer
   - observable
   - architecture
   - state-management
   - reactive
+  - mvc
+  - mvvm
+  - mvp
 
 environment:
   sdk: ^3.10.0
