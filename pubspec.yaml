@@ -12,9 +12,6 @@ topics:
   - architecture
   - state-management
   - reactive
-  - mvc
-  - mvvm
-  - mvp
 
 environment:
   sdk: ^3.10.0
