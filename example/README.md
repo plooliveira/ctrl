@@ -16,16 +16,19 @@ The playground demonstrates how to use the Ctrl package in various contexts, inc
 ## 📋 Included Examples
 
 ### 1. Counter
-Basic demonstration of Observable and loading states, ideal for understanding the fundamentals.
+Basic demonstration of `Observable`, `Watch`, and loading states.
 
-### 2. Theme Switcher
-Demonstrates HotswapObservable for dynamically switching between different Observable sources at runtime.
+### 2. Counter (Cascade)
+Demonstrates cascade state composition, where parent and child widgets keep isolated controllers while passing data downward.
 
-### 3. Product Form
-Demonstration of complex Objects manipulation using `Observable.update()` for granular state updates.
+### 3. Theme Switcher
+Demonstrates `HotswapObservable` for dynamically switching between different observable sources at runtime.
 
-### 4. Todo List
-Complete example with Repository Pattern, demonstrating reactive integration with local database and CRUD operations.
+### 4. Product Form
+Demonstrates mutable model updates with `Observable.update()` for granular form state changes.
+
+### 5. Todo List
+Complete example using the repository pattern, reactive local persistence, and CRUD flows.
 
 
 ## 🏗️ Project Structure
@@ -36,7 +39,7 @@ This project follows a **simple and pragmatic structure**, focused on demonstrat
 lib/
 ├── core/           # Settings, routes and shared components
 ├── data/           # Models, repositories and data layer
-├── view/           # Views and Ctrl classes (Controllers/ViewModels)
+├── view/           # Views and Ctrl classes (controllers / view models)
 └── main.dart       # Application entry point
 ```
 

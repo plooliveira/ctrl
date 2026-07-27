@@ -13,7 +13,7 @@ import 'package:ctrl/ctrl.dart';
 ///
 /// ```dart
 /// void setupLocator() {
-///   Locator().registerFactory(() => CounterController());
+///   Locator().registerFactory((_) => CounterController());
 /// }
 /// ```
 ///

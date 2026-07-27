@@ -17,7 +17,7 @@ extension MutableDataScope on DataScope {
     return add(MutableObservable(start));
   }
 
-  /// Creates a MutableObservable that mirrors a source Observable.
+  /// Creates a [MutableObservable] that mirrors a source [Observable].
   ///
   /// Creates a MutableObservable that starts with the source's value and
   /// automatically updates whenever the source changes. Changes to the
@@ -54,15 +54,15 @@ extension MutableDataScope on DataScope {
 
 /// Extension methods for combining multiple [Observable] or [ChangeNotifier] sources.
 extension DataScopeExtensions on DataScope {
-  /// Combines multiple Observable sources using a mediator function.
+  /// Combines multiple [Observable] sources using a mediator function.
   ///
-  /// Creates a Observable that updates whenever any of the [sources] change.
+  /// Creates an [Observable] that updates whenever any of the [sources] change.
   /// The [mediate] function is called to compute the new value.
   ///
   /// Example:
   /// ```dart
-  /// final firstName = MutableLiveData('John');
-  /// final lastName = MutableLiveData('Doe');
+  /// final firstName = MutableObservable('John');
+  /// final lastName = MutableObservable('Doe');
   ///
   /// final fullName = scope.join([firstName, lastName], () {
   ///   return '${firstName.value} ${lastName.value}';
@@ -71,9 +71,9 @@ extension DataScopeExtensions on DataScope {
   Observable<T> join<T>(List<Observable> sources, T Function() mediate) =>
       add(_MediatorLiveData(sources, mediate));
 
-  /// Merges multiple ChangeNotifier sources into a single LiveData.
+  /// Merges multiple [ChangeNotifier] sources into a single [Observable].
   ///
-  /// Similar to [join] but works with any [ChangeNotifier], not just LiveData.
+  /// Similar to [join] but works with any [ChangeNotifier], not just [Observable].
   /// The [transform] function is called whenever any source notifies.
   ///
   /// Example:

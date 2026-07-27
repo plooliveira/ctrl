@@ -1,4 +1,3 @@
-// ...existing code...
 import 'dart:collection';
 
 import 'helpers/debugger.dart';
@@ -21,10 +20,10 @@ class _Entry {
 /// Usage:
 /// ```dart
 /// // Registering a factory (new instance each time)
-/// Locator().registerFactory<MyService>(() => MyServiceImpl());
+/// Locator().registerFactory<MyService>((get) => MyServiceImpl());
 ///
 /// // Registering a singleton (same instance every time)
-/// Locator().registerSingleton<MyRepository>(() => MyRepositoryImpl());
+/// Locator().registerSingleton<MyRepository>(MyRepositoryImpl());
 ///
 /// // Retrieving instances
 /// final service = Locator().get<MyService>();
@@ -53,7 +52,7 @@ class Locator {
   void registerSingleton<T>(T instance, {bool overwrite = false}) {
     if (!overwrite && _entries.containsKey(T)) {
       throw StateError(
-        'A registration for type $T already exists in SimpleLocator. '
+        'A registration for type $T already exists in Locator. '
         'To overwrite it, set overwrite: true in registerSingleton.',
       );
     }
@@ -79,8 +78,8 @@ class Locator {
   }) {
     if (!overwrite && _entries.containsKey(T)) {
       throw StateError(
-        'A registration for type $T already exists in SL locator. '
-        'To overwrite it, set overwrite: true in registerSingleton.',
+        'A registration for type $T already exists in Locator. '
+        'To overwrite it, set overwrite: true in registerLazySingleton.',
       );
     }
 
@@ -104,11 +103,11 @@ class Locator {
     var entry = _entries[T];
     if (entry == null) {
       throw StateError(
-        'No registration found for type $T in SimpleLocator.\n'
+        'No registration found for type $T in Locator.\n'
         'Register it before using: '
-        'SL.I.registerFactory<$T>(() => My$T()); '
-        'or SL.I.registerSingleton<$T>( My$T());\n'
-        'or SL.I.registerLazySingleton<$T>(() => My$T());\n',
+        'Locator().registerFactory<$T>((get) => ...); '
+        'or Locator().registerSingleton<$T>(instance);\n'
+        'or Locator().registerLazySingleton<$T>((get) => ...);\n',
       );
     }
     if (entry.isSingleton) {

@@ -19,18 +19,18 @@ bool _defaultChangeDetector<T>(T to, T from) {
 
 /// An observable data holder.
 ///
-/// [Observable] is the core class of the mvvm_kit package. It holds a value
+/// [Observable] is the core class of the ctrl package. It holds a value
 /// and notifies observers when that value changes. Use it with [Watch] or
 /// [GroupWatch] widgets to automatically rebuild UI when data changes.
 ///
 /// This is an abstract class. Use [MutableObservable] for data you can modify,
-/// or create instances using factory methods like [MutableObservable.fromValueNotifier]
+/// or create instances using factory methods like [Observable.fromValueNotifier]
 /// and [Observable.fromStream].
 ///
 /// Example:
 /// ```dart
-/// class CounterController extends Controller {
-///   final _counter = MutableObservable(0);
+/// class CounterController with Ctrl {
+///   final _counter = mutable(0);
 ///   Observable<int> get counter => _counter;
 ///
 ///   void increment() => _counter.value++;
@@ -247,8 +247,8 @@ abstract class Observable<T> extends ChangeNotifier {
 ///
 /// Example:
 /// ```dart
-/// class CounterController extends Controller {
-///   final _counter = MutableObservable(0);
+/// class CounterController with Ctrl {
+///   final _counter = mutable(0);
 ///   Observable<int> get counter => _counter;
 ///
 ///   void increment() {
@@ -316,8 +316,8 @@ class MutableObservable<T> extends Observable<T> {
   ///
   /// Example:
   /// ```dart
-  /// class MyController extends Controller {
-  ///   final _data = MutableObservable(0);
+  /// class MyController with Ctrl {
+  ///   final _data = mutable(0);
   ///   Observable<int> get data => _data.immutable;
   ///   // or simply: Observable<int> get data => _data;
   /// }
@@ -333,7 +333,7 @@ class MutableObservable<T> extends Observable<T> {
   ///
   /// Example:
   /// ```dart
-  /// final list = MutableLiveData<List<int>>([1, 2, 3]);
+  /// final list = MutableObservable<List<int>>([1, 2, 3]);
   /// list.update((value) => value.add(4)); // Adds 4 and notifies
   /// ```
   void update(Function(T value) block) {

@@ -21,11 +21,11 @@ class TodosRoute extends GoRoute {
 class TodosView extends CtrlWidget<TodosViewModel> {
   const TodosView({super.key});
 
-  // Override resolveController() to plug a
-  // different injection strategy. In this case, GetIt.
-  // If the type is registered as a factory, each ViewState will get its own instance
+  // Override resolveCtrl() to plug a different injection strategy.
+  // In this case, GetIt is used instead of the built-in locator.
+  // If the type is registered as a factory, each CtrlWidget will get its own instance
   // (i.e. it is not a singleton). That is fine because the underlying data
-  // source (ObjectBox) is shared and reactive — multiple ViewModel instances will
+  // source (ObjectBox) is shared and reactive, so multiple view model instances will
   // still observe the same data changes.
   @override
   TodosViewModel resolveCtrl(BuildContext context) => GetIt.I<TodosViewModel>();

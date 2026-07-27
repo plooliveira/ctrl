@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../ctrl.dart';
 
-/// Mixin for creating Ctrl classes (Controllers, ViewModels, Stores, etc.).
+/// Mixin for creating Ctrl classes (controllers, view models, stores, etc.).
 ///
 /// [Ctrl] manages the state and UI logic.
 /// It provides lifecycle management, automatic
@@ -33,13 +33,13 @@ import '../ctrl.dart';
 /// ```
 ///
 /// See also:
-/// * [ViewState], for connecting Ctrl classes to widgets
+/// * [CtrlWidget] and [CtrlState], for connecting Ctrl classes to widgets
 /// * [Observable] and [MutableObservable], for observable data
 /// * [DataScope], for managing Observable lifecycle
 mixin Ctrl {
   /// Observable flag indicating if a long-running action is in progress.
   ///
-  /// You can Use [beginLoading] and [completeLoading] to control this flag manually,
+  /// You can use [beginLoading] and [completeLoading] to control this flag manually,
   /// or use [executeAsync] to automatically manage it around asynchronous operations with error catching.
 
   Observable<bool> get isLoading => _isLoading;
@@ -95,7 +95,7 @@ mixin Ctrl {
   ///
   /// Set to `true` when the associated view becomes active (visible),
   /// and `false` when it becomes inactive. This is managed automatically
-  /// by [ViewState].
+  /// by [CtrlState].
   bool get isActive => _isActive;
 
   set isActive(bool active) {
@@ -128,9 +128,9 @@ mixin Ctrl {
   /// ```
   MutableObservable<T> mutable<T>(T value) => scope.mutable(value);
 
-  /// Registers an existing [Observable] in the Ctrl class scope.
+  /// Registers any [Observable] or [ChangeNotifier] in the Ctrl class scope.
   ///
-  /// The registered Observable will be automatically disposed when the
+  /// The registered Observable or ChangeNotifier will be automatically disposed when the
   /// Ctrl class is disposed. Use this when you create Observable instances
   /// that aren't created with [mutable].
   ///
@@ -138,7 +138,7 @@ mixin Ctrl {
   /// ```dart
   /// final custom = register(CustomObservable());
   /// ```
-  T register<T extends Observable>(T value) => scope.add(value);
+  T register<T extends ChangeNotifier>(T value) => scope.add(value);
 
   /// Called when the associated view becomes active (visible).
   ///

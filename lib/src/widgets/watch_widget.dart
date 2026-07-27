@@ -19,7 +19,7 @@ import '../observable/observable.dart';
 /// ```
 ///
 /// See also:
-/// * [GroupWatch], for observing multiple LiveData objects
+/// * [GroupWatch], for observing multiple Observable objects
 /// * [Observable], the observable data holder
 class Watch<T> extends StatefulWidget {
   const Watch(
@@ -61,7 +61,7 @@ class _WatchState<T> extends State<Watch<T>> with WatchMixin {
 /// Widget that rebuilds when any of multiple [Observable] values change.
 ///
 /// [GroupWatch] observes multiple [Observable] instances and rebuilds
-/// whenever any of them change. Access values directly from your ViewModel
+/// whenever any of them change. Access values directly from your controller
 /// in the builder.
 ///
 /// Example:
@@ -75,7 +75,7 @@ class _WatchState<T> extends State<Watch<T>> with WatchMixin {
 /// ```
 ///
 /// See also:
-/// * [Watch], for observing a single LiveData
+/// * [Watch], for observing a single Observable
 class GroupWatch extends StatefulWidget {
   /// List of [Observable] instances to observe.
   final List<Observable> notifiers;

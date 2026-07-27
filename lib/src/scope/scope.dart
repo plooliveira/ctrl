@@ -20,7 +20,7 @@ part '_dispose.dart';
 /// Example:
 /// ```dart
 /// final scope = DataScope();
-/// final data1 = scope.add(MutableLiveData(0));
+/// final data1 = scope.add(MutableObservable(0));
 /// final data2 = scope.mutable('hello');
 ///
 /// // Later, dispose all at once
@@ -57,7 +57,7 @@ class DataScope {
   ///
   /// Example:
   /// ```dart
-  /// final liveData = scope.add(MutableLiveData(42));
+  /// final data = scope.add(MutableObservable(42));
   /// ```
   T add<T extends ChangeNotifier>(T data) {
     _items.add(data);

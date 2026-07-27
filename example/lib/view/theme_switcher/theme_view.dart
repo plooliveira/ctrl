@@ -8,7 +8,7 @@ import '../../core/theme/theme_mode.dart';
 
 part 'widgets/_theme_preview.dart';
 
-// Here an example that uses Provider package to provide the Controller to the View.
+// This example uses Provider to supply the controller to the widget subtree.
 class ThemeRoute extends GoRoute {
   ThemeRoute()
     : super(
@@ -26,8 +26,8 @@ class ThemeRoute extends GoRoute {
 class ThemeView extends CtrlWidget<ThemeController> {
   const ThemeView({super.key});
 
-  // Override resolveController() to plug a
-  // different injection strategy. In this case, Provider.
+  // Override resolveCtrl() to plug a different injection strategy.
+  // In this case, Provider is used instead of the built-in locator.
   @override
   ThemeController resolveCtrl(BuildContext context) =>
       context.read<ThemeController>();

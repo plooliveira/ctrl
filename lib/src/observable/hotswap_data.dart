@@ -20,7 +20,7 @@ import '../../ctrl.dart';
 /// ```
 ///
 /// See also:
-/// * [LiveDataExtensions.hotswappable], extension method to create HotswapObservable
+/// * `hotswappable()`, the extension method that creates a [HotswapObservable]
 class HotswapObservable<T> extends Observable<T> {
   late Observable<T> _base;
 

@@ -76,7 +76,7 @@ extension ListObservable<D> on Observable<Iterable<D>> {
   Iterable<T> expand<T>(Iterable<T> Function(D element) toElements) =>
       value.expand(toElements);
 
-  /// Creates a Observable that filters elements based on a condition.
+  /// Creates an Observable that filters elements based on a condition.
   ///
   /// Returns a new Observable that updates whenever this Observable changes,
   /// containing only elements that satisfy the [check] function.
@@ -93,7 +93,7 @@ extension ListObservable<D> on Observable<Iterable<D>> {
   Observable<Iterable<D>> filtered(bool Function(D value) check) =>
       _AutoDisposeFilter(this, check);
 
-  /// Creates a Observable that filters out null elements.
+  /// Creates an Observable that filters out null elements.
   ///
   /// Returns a new Observable containing only non-null elements.
   ///

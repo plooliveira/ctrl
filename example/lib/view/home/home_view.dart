@@ -31,18 +31,18 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _ExampleCard(
-              title: '1. Counter (Cascade)',
+              title: 'Counter (Cascade)',
               description:
-                  'Basic Controller + Observable and ViewWidget with cascade state',
+                  'CtrlWidget + Observable with cascade state composition',
               icon: Icons.add_circle_outline,
               onTap: () => context.push('/counter-cascade'),
             ),
 
             const SizedBox(height: 16),
             _ExampleCard(
-              title: '1. Counter',
+              title: 'Counter',
               description:
-                  'Basic Controller + Observable + ViewWidget with loading states',
+                  'Basic Observable state with loading feedback',
               icon: Icons.add_circle_outline,
               onTap: () => context.push('/counter'),
             ),
@@ -50,8 +50,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 16),
 
             _ExampleCard(
-              title: '4. Product Form',
-              description: 'Observable.update() demonstration',
+              title: 'Product Form',
+              description: 'Mutable model updates with Observable.update()',
               icon: Icons.edit_document,
               onTap: () => context.push('/product-form'),
               enabled: true,
@@ -60,8 +60,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 16),
 
             _ExampleCard(
-              title: '2. Theme Switcher',
-              description: 'HotswapObservable demonstration',
+              title: 'Theme Switcher',
+              description: 'Dynamic source switching with HotswapObservable',
               icon: Icons.palette_outlined,
               onTap: () => context.push('/theme'),
               enabled: true,
@@ -70,8 +70,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 16),
 
             _ExampleCard(
-              title: '3. Todo List',
-              description: 'Reactive DB + RepositoryData',
+              title: 'Todo List',
+              description: 'Repository pattern with reactive local persistence',
               icon: Icons.checklist_outlined,
               onTap: () => context.push('/todo'),
               enabled: true,

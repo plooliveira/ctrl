@@ -4,7 +4,7 @@
     <img src="ctrl_logo.png" alt="ctrl logo" width="400">
   </p>
 
-Ctrl is a package that allows you to control observables within scopes that are linked to the Widget Lifecycle.
+Ctrl is a package that allows you to control observables within scopes linked to the widget lifecycle.
 
 It provides a simple way to manage state in your Flutter applications using Flutter's built-in ChangeNotifier.
 
@@ -20,7 +20,7 @@ It provides a simple way to manage state in your Flutter applications using Flut
 `Observable` is the core of this package. It is an enhanced implementation of Flutter's `ChangeNotifier` that provides more power and flexibility.
 
 Unlike a standard `ChangeNotifier`, an `Observable`:
--   Holds a value and by default notifies listeners only when the value changes(You can use emitAll to notify listeners even if the value hasn't changed).
+-   Holds a value and by default notifies listeners only when the value changes (you can use `emitAll` to notify listeners even if the value has not changed).
 -   Allows you to define custom equality logic via `changeDetector`.
 -   Can be granularly forced to notify listeners even if the value hasn't changed using `reload()`.
 
@@ -37,9 +37,9 @@ The package comes with a set of useful extensions to manipulate your data, like:
 
 ## Deep Dive: Scopes
 
-Scopes are used to manage the lifecycle of your observables. They are automatically initialized and disposed of when the Widget is created and destroyed.
+Scopes are used to manage the lifecycle of your observables. They are automatically initialized and disposed of when the widget is created and destroyed.
 
-Observables have an internal scope. Dependent observables like transformed, inherit the scope of their source. So when the source is disposed, the dependent observables are disposed as well.
+Observables have an internal scope. Dependent observables, such as transformed observables, inherit the scope of their source. When the source is disposed, the dependent observables are disposed as well.
 
 ## Installation
 
@@ -47,14 +47,14 @@ Add `ctrl` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ctrl: ^0.2.0
+  ctrl: ^1.0.1
 ```
 
 ## Usage
 
-### 1. Create a Ctrl class (Controller / ViewModel / Store)
+### 1. Create a Ctrl class (controller / view model / store)
 
-Use the `Ctrl` mixin to add scope management capabilities to your class. You can create observables using the `mutable` method.
+Use the `Ctrl` mixin to add scope management capabilities to your class. You can create observables using the `mutable()` method.
 
 ```dart
 import 'package:ctrl/ctrl.dart';
@@ -233,38 +233,52 @@ class _DashboardPageState extends CtrlState<DashboardPage> {
 ```dart
 import 'package:ctrl/ctrl.dart';
 
-class Product {
-  final int id;
-  final String name;
-  final double price;
+class ProductDraft {
+  int id;
+  String name;
+  double price;
 
-  Product({required this.id, required this.name, required this.price});
+  ProductDraft({
+    required this.id,
+    required this.name,
+    required this.price,
+  });
 }
 
-class CounterController with Ctrl {
-  // Create a mutable observable
-  late final product = mutable(Product(id: 1, name: 'Product 1', price: 10.0));
+class ProductController with Ctrl {
+  late final product = mutable(
+    ProductDraft(id: 1, name: 'Product 1', price: 10.0),
+  );
 
   void updateProductPrice() {
-    product.update((product) {
-      product.price = 20.0;
+    product.update((draft) {
+      draft.price = 20.0;
     });
   }
 }
 ```
+
+Use `update()` when the underlying object is mutable. If your model is immutable, assign a new instance to `.value` instead.
 
 ### Dependency Injection
 
 By default, `Ctrl` uses a simple built-in service locator. You can register your controllers before using them.
 
 ```dart
-void main() {
-  // Register the controller factory
-  // i() is a shortcut for Locator().get(). It helps inject dependencies into the constructor.
-  Locator().registerFactory((i) => CounterController(repository: i())); 
+class CounterRepository {}
 
-  // You can also register other dependencies
-  Locator().registerSingleton((_) => CounterRepository());
+class CounterController with Ctrl {
+  CounterController({required this.repository});
+
+  final CounterRepository repository;
+}
+
+void main() {
+  final locator = Locator();
+  locator.registerSingleton(CounterRepository());
+  locator.registerFactory(
+    (get) => CounterController(repository: get()),
+  );
 
   runApp(const MyApp());
 }
@@ -275,11 +289,12 @@ void main() {
 You can override `resolveCtrl` in your `CtrlWidget` to use any other dependency injection solution (like GetIt, Provider, etc.).
 
 ```dart
+import 'package:get_it/get_it.dart';
+
 // In CtrlWidget
 class CounterPage extends CtrlWidget<CounterController> {
   @override
-  CounterController? resolveCtrl(BuildContext context) => GetIt.I.get();
- 
+  CounterController? resolveCtrl(BuildContext context) => GetIt.I<CounterController>();
 
   @override
   Widget build(BuildContext context, CounterController ctrl) {
@@ -296,7 +311,7 @@ class _CounterPageState extends CtrlState<CounterPage> {
 
   @override
   void initState() {
-    ctrl = useCtrl(GetIt.I.get());
+    ctrl = useCtrl(GetIt.I<CounterController>());
     super.initState();
   }
 

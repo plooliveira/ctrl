@@ -1,3 +1,6 @@
+## 1.2.0
+ - Enable register() on ctrl mixin to register any ChangeNotifier on the current scope
+- Update documentation
 ## 1.0.1
  - update README.md
 
