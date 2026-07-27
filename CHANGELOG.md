@@ -1,6 +1,7 @@
 ## 1.2.0
- - Enable register() on ctrl mixin to register any ChangeNotifier on the current scope
-- Update documentation
+ - Add support for registering existing ChangeNotifier instances on the Ctrl class scope
+ - Upgrade dependencies
+ - Update documentation
 ## 1.0.1
  - update README.md
 
